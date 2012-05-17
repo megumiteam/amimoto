@@ -1,4 +1,3 @@
-#!/usr/bin/php
 <?php
 $mysql_db = "";
 switch($argc) {
@@ -56,6 +55,7 @@ if ( !defined('ABSPATH') )
     define('ABSPATH', dirname(__FILE__) . '/');
 require_once(ABSPATH . 'wp-settings.php');
 EOT;
+}
 
 $wp_cfg = preg_replace('/define\([\'"]DB_NAME[\'"],[\s]*[\'"][^\'"]*[\'"]\);/i', "define('DB_NAME', '{$mysql_db}');", $wp_cfg);
 $wp_cfg = preg_replace('/define\([\'"]DB_USER[\'"],[\s]*[\'"][^\'"]*[\'"]\);/i', "define('DB_USER', '{$mysql_user}');", $wp_cfg);
@@ -69,7 +69,6 @@ foreach ( $salts as $salt ) {
     unset($matches);
 }
 file_put_contents("/var/www/vhosts/{$site_name}/wp-config.php", $wp_cfg);
-
 
 echo "\n--------------------------------------------------\n";
 echo " MySQL DataBase: {$mysql_db}\n";
