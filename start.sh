@@ -11,8 +11,8 @@ cd /tmp/
 /bin/tar xvfz latest-ja.tar.gz
 /bin/mv /tmp/wordpress /var/www/vhosts/$1
 
-if [ -f /tmp/amimoto/wp_start.sh ]; then
+if [ -f /tmp/amimoto/wp_start.php ]; then
   /usr/bin/php /tmp/amimoto/wp_start.php $1
 fi
 
-/bin/chown -R /var/www/vhosts/$1
+/bin/chown -R nginx:nginx /var/www/vhosts/$1
