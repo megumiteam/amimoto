@@ -9,7 +9,7 @@ switch($argc) {
         $site_name = $argv[1];
 }
 $mysql_db   = str_replace(array('.','-'), '_', $site_name);
-$mysql_user = substr('wp-'.md5($mysql_db),0,16);
+$mysql_user = substr('wp_'.md5($mysql_db),0,16);
 $mysql_pwd  = md5(mt_rand().date("YmdHisu"));
 
 // make user and database
