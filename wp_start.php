@@ -6,25 +6,23 @@ switch($argc) {
         exit();
     case 2:
     default:
-        $mysql_db = $argv[1];
+        $site_name = $argv[1];
 }
-$mysql_db   = str_replace(array('.','_'), '_', $mysql_db);
+$mysql_db   = str_replace(array('.','-'), '_', $site_name);
 $mysql_user = $mysql_db;
 $mysql_pwd  = md5(mt_rand().date("YmdHisu"));
 
 // make user and database
 $link = mysql_connect('localhost:3307', 'root', '');
-if ( !$link ) {
+if ( !$link )
     die('MySQL connect error!!: '.mysql_error());
-}
-$db_selected = mysql_select_db('mysql', $link);
-if ( !$db_selected ) {
+if ( !mysql_select_db('mysql', $link) )
     die('MySQL select DB error!!: '.mysql_error());
-}
-        
-mysql_query("create database {$mysql_db} default character set utf8 collate utf8_general_ci;");
-mysql_query("grant all privileges on {$mysql_db}.* to {$mysql_user}@localhost identified by '{$mysql_pwd}';");
-
+if ( !mysql_query("create database {$mysql_db} default character set utf8 collate utf8_general_ci;") )
+    die('MySQL create database error!!: '.mysql_error());
+if ( !mysql_query("grant all privileges on {$mysql_db}.* to {$mysql_user}@localhost identified by '{$mysql_pwd}';") )
+    die('MySQL create user error!!: '.mysql_error());
+    
 mysql_close($link);
 
 // make wp-config.php
