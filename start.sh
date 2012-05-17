@@ -8,7 +8,8 @@ cd /tmp/
 /sbin/service mysql start
 
 /usr/bin/wget http://ja.wordpress.org/latest-ja.tar.gz
-/bin/tar xvfz latest-ja.tar.gz
+/bin/tar xvfz /tmp/latest-ja.tar.gz
+/bin/rm /tmp/latest-ja.tar.gz
 /bin/mv /tmp/wordpress /var/www/vhosts/$1
 
 if [ -f /tmp/amimoto/wp_start.php ]; then
