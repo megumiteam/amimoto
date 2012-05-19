@@ -1,12 +1,13 @@
 <?php
-$mysql_db = "";
+$mysql_db = $public_name = $instance_id = $site_name = "";
 switch($argc) {
     case 1:
         echo "please input site name!\n";
         exit();
-    case 2:
     default:
-        $site_name = $argv[1];
+        $public_name = isset($argv[3]) ? $argv[3] : '';
+        $instance_id = isset($argv[2]) ? $argv[2] : '';
+        $site_name   = $argv[1];
 }
 $mysql_db   = str_replace(array('.','-'), '_', $site_name);
 $mysql_user = substr('wp_'.md5($mysql_db),0,16);
@@ -62,10 +63,21 @@ $wp_cfg = preg_replace('/define\([\'"]DB_PASSWORD[\'"],[\s]*[\'"][^\'"]*[\'"]\);
 $salts  = preg_split('/[\r\n]+/ms', file_get_contents('https://api.wordpress.org/secret-key/1.1/salt/'));
 foreach ( $salts as $salt ) {
     if ( preg_match('/define\([\'"](AUTH_KEY|SECURE_AUTH_KEY|LOGGED_IN_KEY|NONCE_KEY|AUTH_SALT|SECURE_AUTH_SALT|LOGGED_IN_SALT|NONCE_SALT)[\'"],[\s]*[\'"]([^\'"]*)[\'"]\);/i', $salt, $matches) ) {
-        $wp_cfg = preg_replace('/define\([\'"]'.preg_quote($matches[1],'/').'[\'"],[\s]*[\'"][^\'"]*[\'"]\);/i', "define('{$matches[1]}', '{$matches[2]}');", $wp_cfg);
+        $wp_cfg = preg_replace(
+            '/define\([\'"]'.preg_quote($matches[1],'/').'[\'"],[\s]*[\'"][^\'"]*[\'"]\);/i',
+            "define('{$matches[1]}', '{$matches[2]}');",
+            $wp_cfg);
     }
     unset($matches);
 }
+
+if ( $instance_id === $site_name ) {
+    $wp_cfg = preg_replace(
+        '/($table_prefix[\s]*\=[\s]*[\'"][^\'"]*[\'"]\);)/i',
+        '$1'."\n".sprintf("define('WP_SITEURL','%1\$s')\ndefine('WP_HOME','%1\$s');\n", $public_name),
+        $wp_cfg);
+}
+
 file_put_contents("/var/www/vhosts/{$site_name}/wp-config.php", $wp_cfg);
 
 echo "\n--------------------------------------------------\n";
@@ -75,5 +87,5 @@ echo " MySQL Password: {$mysql_pwd}\n";
 echo "--------------------------------------------------\n";
 
 echo "\n";
-echo "Success!! http://{$site_name}/\n";
+printf ("Success!! http://%s/\n", $instance_id === $site_name ? $public_name : $site_name);
 echo "--------------------------------------------------\n";
