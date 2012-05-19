@@ -73,8 +73,8 @@ foreach ( $salts as $salt ) {
 
 if ( $instance_id === $site_name ) {
     $wp_cfg = preg_replace(
-        '/($table_prefix[\s]*\=[\s]*[\'"][^\'"]*[\'"]\);)/i',
-        '$1'."\n".sprintf("define('WP_SITEURL','%1\$s')\ndefine('WP_HOME','%1\$s');\n", $public_name),
+        '/($table_prefix[\s]*\=[\s]*[\'"][^\'"]*[\'"];)/i',
+        '$1'."\n\n".sprintf("define('WP_SITEURL','%1\$s')\ndefine('WP_HOME','%1\$s');\n", $public_name),
         $wp_cfg);
 }
 
