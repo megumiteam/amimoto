@@ -78,7 +78,7 @@ if ( $instance_id === $site_name ) {
         $wp_cfg);
 }
 
-$wp_cfg = str_replace("\r\n", "\n");
+$wp_cfg = str_replace("\r\n", "\n", $wp_cfg);
 
 file_put_contents("/var/www/vhosts/{$site_name}/wp-config.php", $wp_cfg);
 
