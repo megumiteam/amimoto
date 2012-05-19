@@ -74,9 +74,11 @@ foreach ( $salts as $salt ) {
 if ( $instance_id === $site_name ) {
     $wp_cfg = preg_replace(
         '/(table_prefix[\s]*\=[\s]*[\'"][^\'"]*[\'"];)/i',
-        '$1'."\n\n".sprintf("define('WP_SITEURL','%1\$s')\ndefine('WP_HOME','%1\$s');\n", $public_name),
+        '$1'."\n\n".sprintf("define('WP_SITEURL','%1\$s');\ndefine('WP_HOME','%1\$s');\n", $public_name),
         $wp_cfg);
 }
+
+$wp_cfg = str_replace("\r\n", "\n");
 
 file_put_contents("/var/www/vhosts/{$site_name}/wp-config.php", $wp_cfg);
 
