@@ -1,6 +1,7 @@
 #!/bin/sh
 SERVERNAME=$1
 INSTANCEID=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id`
+PUBLICNAME=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/public-hostname`
 
 cd /tmp/
 /bin/cp -Rf /tmp/amimoto/etc/* /etc/
@@ -24,7 +25,7 @@ fi
 /bin/mv /tmp/wordpress /var/www/vhosts/$SERVERNAME
 
 if [ -f /tmp/amimoto/wp-setup.php ]; then
-  /usr/bin/php /tmp/amimoto/wp-setup.php $SERVERNAME
+  /usr/bin/php /tmp/amimoto/wp-setup.php $SERVERNAME $INSTANCEID $PUBLICNAME
 fi
 
 /bin/chown -R nginx:nginx /var/www/vhosts/$SERVERNAME
