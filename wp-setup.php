@@ -13,7 +13,7 @@ switch($argc) {
 }
 $mysql_db   = str_replace(array('.','-'), '_', $site_name);
 $mysql_user = empty($mysql_user) ? substr('wp_'.md5($mysql_db),0,16) : $mysql_user;
-$mysql_pwd  = empty($mysql_pwd) ? md5(mt_rand().date("YmdHisu")) : $mysql_pwd;
+$mysql_pwd  = empty($mysql_pwd)  ? md5(mt_rand().date("YmdHisu"))    : $mysql_pwd;
 
 // make user and database
 $link = mysql_connect('localhost:3307', 'root', '');
@@ -58,13 +58,13 @@ require_once(ABSPATH . 'wp-settings.php');
 EOT;
 }
 
-$wp_cfg = preg_replace('/define\([\'"]DB_NAME[\'"],[\s]*[\'"][^\'"]*[\'"]\);/i', "define('DB_NAME', '{$mysql_db}');", $wp_cfg);
-$wp_cfg = preg_replace('/define\([\'"]DB_USER[\'"],[\s]*[\'"][^\'"]*[\'"]\);/i', "define('DB_USER', '{$mysql_user}');", $wp_cfg);
-$wp_cfg = preg_replace('/define\([\'"]DB_PASSWORD[\'"],[\s]*[\'"][^\'"]*[\'"]\);/i', "define('DB_PASSWORD', '{$mysql_pwd}');", $wp_cfg);
+$wp_cfg = preg_replace('/define\([\s]*[\'"]DB_NAME[\'"][\s]*,[\s]*[\'"][^\'"]*[\'"][\s]*\)/i', "define('DB_NAME', '{$mysql_db}')", $wp_cfg);
+$wp_cfg = preg_replace('/define\([\s]*[\'"]DB_USER[\'"][\s]*,[\s]*[\'"][^\'"]*[\'"][\s]*\)/i', "define('DB_USER', '{$mysql_user}')", $wp_cfg);
+$wp_cfg = preg_replace('/define\([\s]*[\'"]DB_PASSWORD[\'"][\s]*,[\s]*[\'"][^\'"]*[\'"][\s]*\)/i', "define('DB_PASSWORD', '{$mysql_pwd}')", $wp_cfg);
 
 $salts  = preg_split('/[\r\n]+/ms', file_get_contents('https://api.wordpress.org/secret-key/1.1/salt/'));
 foreach ( $salts as $salt ) {
-    if ( preg_match('/define\([\'"](AUTH_KEY|SECURE_AUTH_KEY|LOGGED_IN_KEY|NONCE_KEY|AUTH_SALT|SECURE_AUTH_SALT|LOGGED_IN_SALT|NONCE_SALT)[\'"],[\s]*[\'"]([^\'"]*)[\'"]\);/i', $salt, $matches) ) {
+    if ( preg_match('/define\([\s]*[\'"](AUTH_KEY|SECURE_AUTH_KEY|LOGGED_IN_KEY|NONCE_KEY|AUTH_SALT|SECURE_AUTH_SALT|LOGGED_IN_SALT|NONCE_SALT)[\'"][\s]*,[\s]*[\'"]([^\'"]*)[\'"][\s]*\)/i', $salt, $matches) ) {
         $wp_cfg = preg_replace(
             '/define\([\'"]'.preg_quote($matches[1],'/').'[\'"],[\s]*[\'"][^\'"]*[\'"]\);/i',
             "define('{$matches[1]}', '{$matches[2]}');",
