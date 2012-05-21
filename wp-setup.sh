@@ -38,7 +38,7 @@ fi
 
 /usr/bin/wget http://ja.wordpress.org/latest-ja.tar.gz > /dev/null 2>&1
 /bin/tar xvfz /tmp/latest-ja.tar.gz > /dev/null 2>&1
-plugin_install nginx-champuru.1.1.0.zip $SERVERNAME > /dev/null 2>&1
+plugin_install "nginx-champuru.1.1.0.zip" "$SERVERNAME"
 /bin/rm /tmp/latest-ja.tar.gz
 /bin/mv /tmp/wordpress /var/www/vhosts/$SERVERNAME
 
