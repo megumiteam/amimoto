@@ -47,4 +47,8 @@ if [ -f /tmp/amimoto/wp-setup.php ]; then
 fi
 echo "... WordPress installed"
 
+/bin/chown -R nginx:nginx /var/log/nginx
+/bin/chown -R nginx:nginx /var/log/php-fpm
+/bin/chown -R nginx:nginx /var/cache/nginx
+/bin/chown -R nginx:nginx /var/tmp/php
 /bin/chown -R nginx:nginx /var/www/vhosts/$SERVERNAME

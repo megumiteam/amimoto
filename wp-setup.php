@@ -1,17 +1,19 @@
 <?php
-$mysql_db = $public_name = $instance_id = $site_name = "";
+$mysql_db = $mysql_user = $mysql_pwd = $public_name = $instance_id = $site_name = "";
 switch($argc) {
     case 1:
         echo "please input site name!\n";
         exit();
     default:
+        $mysql_pwd   = isset($argv[5]) ? $argv[5] : '';
+        $mysql_user  = isset($argv[4]) ? $argv[4] : '';
         $public_name = isset($argv[3]) ? $argv[3] : '';
         $instance_id = isset($argv[2]) ? $argv[2] : '';
         $site_name   = $argv[1];
 }
 $mysql_db   = str_replace(array('.','-'), '_', $site_name);
-$mysql_user = substr('wp_'.md5($mysql_db),0,16);
-$mysql_pwd  = md5(mt_rand().date("YmdHisu"));
+$mysql_user = empty($mysql_user) ? substr('wp_'.md5($mysql_db),0,16) : $mysql_user;
+$mysql_pwd  = empty($mysql_pwd) ? md5(mt_rand().date("YmdHisu")) : $mysql_pwd;
 
 // make user and database
 $link = mysql_connect('localhost:3307', 'root', '');
