@@ -15,24 +15,32 @@ cd /tmp/
 /bin/cp -Rf /tmp/amimoto/etc/nginx/* /etc/nginx/
 sed -e "s/\$host\([;\.]\)/$INSTANCEID\1/" /tmp/amimoto/etc/nginx/conf.d/default.conf > /etc/nginx/conf.d/default.conf
 sed -e "s/\$host\([;\.]\)/$INSTANCEID\1/" /tmp/amimoto/etc/nginx/conf.d/default.backend.conf > /etc/nginx/conf.d/default.backend.conf
-if [ "$SERVERNAME" != "$INSTANCEID" ]; then
+if [ "$SERVERNAME" = "$INSTANCEID" ]; then
+  /sbin/service nginx stop
+  /bin/rm -Rf /var/log/nginx/*
+  /bin/rm -Rf /var/cache/nginx/*
+  /sbin/service nginx start
+else
   sed -e "s/\$host\([;\.]\)/$SERVERNAME\1/" /tmp/amimoto/etc/nginx/conf.d/default.conf | sed -e "s/ default;/;/" | sed -e "s/\(server_name \)_/\1$SERVERNAME/" | sed -e "s/\(\\s*\)\(include     \/etc\/nginx\/phpmyadmin;\)/\1#\2/" > /etc/nginx/conf.d/$SERVERNAME.conf
   sed -e "s/\$host\([;\.]\)/$SERVERNAME\1/" /tmp/amimoto/etc/nginx/conf.d/default.backend.conf | sed -e "s/ default;/;/" | sed -e "s/\(server_name \)_/\1$SERVERNAME/" > /etc/nginx/conf.d/$SERVERNAME.backend.conf
+  /usr/sbin/nginx -s reload
 fi
-/usr/sbin/nginx -s reload
 
 if [ "$SERVERNAME" = "$INSTANCEID" ]; then
+  /sbin/service php-fpm stop
   /bin/cp /tmp/amimoto/etc/php.ini /etc/
   /bin/cp -Rf /tmp/amimoto/etc/php.d/* /etc/php.d/
   /bin/cp /tmp/amimoto/etc/php-fpm.conf /etc/
   /bin/cp -Rf /tmp/amimoto/etc/php-fpm.d/* /etc/php-fpm.d/
-  /sbin/service php-fpm restart
+  /bin/rm -Rf /var/log/php-fpm/*
+  /sbin/service php-fpm start
 fi
 
 if [ "$SERVERNAME" = "$INSTANCEID" ]; then
-  /bin/cp /tmp/amimoto/etc/my.cnf /etc/
   /sbin/service mysql stop
+  /bin/cp /tmp/amimoto/etc/my.cnf /etc/
   /bin/rm /var/lib/mysql/ib_logfile*
+  /bin/rm /var/log/mysqld.log*
   /sbin/service mysql start
 fi
 
