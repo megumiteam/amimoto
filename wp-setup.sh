@@ -12,6 +12,11 @@ PUBLICNAME=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/public-host
 
 cd /tmp/
 
+if [ "$SERVERNAME" = "$INSTANCEID" ]; then
+  /bin/mv /etc/localtime /etc/localtime.bak
+  /bin/cp -p /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+fi
+  
 /bin/cp -Rf /tmp/amimoto/etc/nginx/* /etc/nginx/
 sed -e "s/\$host\([;\.]\)/$INSTANCEID\1/" /tmp/amimoto/etc/nginx/conf.d/default.conf > /etc/nginx/conf.d/default.conf
 sed -e "s/\$host\([;\.]\)/$INSTANCEID\1/" /tmp/amimoto/etc/nginx/conf.d/default.backend.conf > /etc/nginx/conf.d/default.backend.conf
