@@ -64,10 +64,10 @@ $wp_cfg = preg_replace('/define\([\s]*[\'"]DB_PASSWORD[\'"][\s]*,[\s]*[\'"][^\'"
 
 $salts  = preg_split('/[\r\n]+/ms', file_get_contents('https://api.wordpress.org/secret-key/1.1/salt/'));
 foreach ( $salts as $salt ) {
-    if ( preg_match('/define\([\s]*[\'"](AUTH_KEY|SECURE_AUTH_KEY|LOGGED_IN_KEY|NONCE_KEY|AUTH_SALT|SECURE_AUTH_SALT|LOGGED_IN_SALT|NONCE_SALT)[\'"][\s]*,[\s]*[\'"]([^\'"]*)[\'"][\s]*\)/i', $salt, $matches) ) {
+    if ( preg_match('/define\([\s]*[\'"](AUTH_KEY|SECURE_AUTH_KEY|LOGGED_IN_KEY|NONCE_KEY|AUTH_SALT|SECURE_AUTH_SALT|LOGGED_IN_SALT|NONCE_SALT)[\'"][\s]*,[\s]*[\'"]([^\'"]*)[\'"][\s]*\);/i', $salt, $matches) ) {
         $wp_cfg = preg_replace(
             '/define\([\'"]'.preg_quote($matches[1],'/').'[\'"],[\s]*[\'"][^\'"]*[\'"]\);/i',
-            "define('{$matches[1]}', '{$matches[2]}');",
+            $matches[0],
             $wp_cfg);
     }
     unset($matches);
@@ -83,6 +83,12 @@ if ( $instance_id === $site_name ) {
 $wp_cfg = str_replace("\r\n", "\n", $wp_cfg);
 
 file_put_contents("/var/www/vhosts/{$site_name}/wp-config.php", $wp_cfg);
+
+$ngx_champuru = "/var/www/vhosts/{$site_name}/wp-content/plugins/nginx-champuru/nginx-champuru.php";
+if ( file_exists($ngx_champuru) ) {
+    $ngx_champuru_php = str_replace('"/var/cache/nginx"','"/var/cache/nginx/proxy_cache"', file_get_contents($ngx_champuru));
+    file_put_contents($ngx_champuru, $ngx_champuru_php);
+}
 
 echo "\n--------------------------------------------------\n";
 echo " MySQL DataBase: {$mysql_db}\n";
