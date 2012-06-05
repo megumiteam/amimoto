@@ -73,6 +73,11 @@ foreach ( $salts as $salt ) {
     unset($matches);
 }
 
+$wp_cfg = preg_replace(
+    '/(table_prefix[\s]*\=[\s]*[\'"][^\'"]*[\'"];)/i',
+    '$1'."\n\ndefine('NCC_CACHE_DIR', '/var/cache/nginx/proxy_cache');\n\n",
+    $wp_cfg);
+
 if ( $instance_id === $site_name ) {
     $wp_cfg = preg_replace(
         '/(table_prefix[\s]*\=[\s]*[\'"][^\'"]*[\'"];)/i',
