@@ -54,7 +54,7 @@ echo "WordPress install ..."
 /bin/tar xvfz /tmp/latest-ja.tar.gz > /dev/null 2>&1
 /bin/rm /tmp/latest-ja.tar.gz
 /bin/mv /tmp/wordpress /var/www/vhosts/$SERVERNAME
-plugin_install "nginx-champuru.1.1.2.zip" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "nginx-champuru.1.1.3.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wp-remote-manager-client.0.7.0.2.zip" "$SERVERNAME" > /dev/null 2>&1
 if [ -f /tmp/amimoto/wp-setup.php ]; then
   /usr/bin/php /tmp/amimoto/wp-setup.php $SERVERNAME $INSTANCEID $PUBLICNAME
