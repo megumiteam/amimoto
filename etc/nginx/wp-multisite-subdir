@@ -1,0 +1,63 @@
+# サブディレクトリ用のルール
+# server{}ブロックからインクルードさせられます。
+ 
+# 順番がおかしく見えるかもですが、下の方のルールで失敗した時に最後にマッチするようにしています。
+# http://wiki.nginx.org/HttpCoreModule
+location / {
+    try_files $uri $uri/ /index.php?$args;
+}
+ 
+# */wp-adminへのリクエストがあったら末尾にスラッシュを付ける
+rewrite /wp-admin$ $scheme://$host$uri/ permanent;
+ 
+# expires headersを送り、404エラーをログしないようにするディレクティブ
+location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+    expires 24h;
+    log_not_found off;
+}
+ 
+# アップロードファイルをwp-includes/ms-files.phpに渡す
+rewrite /files/$ /index.php last;
+ 
+# マルチサイト向け：パフォーマンス向上のために、正しいサブディレクトリにシンボリックリンクを生成するキャッシュプラグインを使いましょう
+set $cachetest "$document_root/wp-content/cache/ms-filemap/${host}${uri}";
+if ($uri ~ /$) {
+    set $cachetest "";
+}
+if (-f $cachetest) {
+    # URIを書き換えて、以降、やり直したり他のルールに進まないようにリライトプロセスを停止します。
+    rewrite ^ /wp-content/cache/ms-filemap/${host}${uri} break;
+}
+ 
+if ($uri !~ wp-content/plugins) {
+    rewrite /files/(.+)$ /wp-includes/ms-files.php?file=$1 last;
+}
+ 
+# '.../wp-.*' と '.../*.php'のリライト
+if (!-e $request_filename) {
+    rewrite ^/[_0-9a-zA-Z-]+(/wp-.*) $1 last;
+    rewrite ^/[_0-9a-zA-Z-]+.*(/wp-admin/.*\.php)$ $1 last;
+    rewrite ^/[_0-9a-zA-Z-]+(/.*\.php)$ $1 last;
+}
+ 
+# phpファイルをphp-fpm/php-fcgiサーバに送る
+location ~ \.php$ {
+    # Zero-day exploit defense.
+    # http://forum.nginx.org/read.php?2,88845,page=3
+    # ファイルがこのサーバにないときちんと動きません。php-fpm/php-fcgiではありえます。
+    # php-fpm/php-fcgiを他のサーバに置いている場合はtry_filesをコメントアウト。ハックされないようにお祈りしましょう。
+ 
+    try_files $uri =404;
+ 
+    fastcgi_split_path_info ^(.+\.php)(/.+)$;
+    include fastcgi_params;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_pass phpfpm;
+    fastcgi_param  REMOTE_ADDR      $http_x_real_ip;
+    fastcgi_pass_header "X-Accel-Redirect";
+    fastcgi_pass_header "X-Accel-Buffering";
+    fastcgi_pass_header "X-Accel-Charset";
+    fastcgi_pass_header "X-Accel-Expires";
+    fastcgi_pass_header "X-Accel-Limit-Rate";
+}
