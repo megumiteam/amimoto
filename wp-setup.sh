@@ -9,6 +9,7 @@ function plugin_install(){
 SERVERNAME=$1
 INSTANCEID=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id`
 PUBLICNAME=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/public-hostname`
+AZ=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone/`
 
 cd /tmp/
 
@@ -55,9 +56,9 @@ echo "WordPress install ..."
 /bin/rm /tmp/latest-ja.tar.gz
 /bin/mv /tmp/wordpress /var/www/vhosts/$SERVERNAME
 plugin_install "nginx-champuru.1.1.3.zip" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "wpbooster-cdn-client.1.2.2.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wp-remote-manager-client.0.7.0.2.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "head-cleaner.1.4.2.9.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "wpbooster-cdn-client.1.2.1.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wp-total-hacks.0.9.1.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "flamingo.1.0.1.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "contact-form-7.3.2.zip" "$SERVERNAME" > /dev/null 2>&1
