@@ -33,4 +33,4 @@ chown -R nginx:nginx /var/www/vhosts
 
 cp usr/local/bin/wp-setup /usr/local/bin/; chmod +x /usr/local/bin/wp-setup
 
-wp-setup default
+/usr/local/bin/wp-setup default
