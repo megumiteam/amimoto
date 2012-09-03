@@ -1,5 +1,5 @@
 #!/bin/sh
-yum update
+yum -y update
 yum install -y zip unzip
 
 rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL
