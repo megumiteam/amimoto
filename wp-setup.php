@@ -11,7 +11,7 @@ switch($argc) {
         $instance_id = isset($argv[2]) ? $argv[2] : '';
         $site_name   = $argv[1];
 }
-$mysql_db   = str_replace(array('.','-'), '_', $site_name);
+$mysql_db   = $sitename !== 'default' ? str_replace(array('.','-'), '_', $site_name) : 'wordpress';
 $mysql_user = empty($mysql_user) ? substr('wp_'.md5($mysql_db),0,16) : $mysql_user;
 $mysql_pwd  = empty($mysql_pwd)  ? md5(mt_rand().date("YmdHisu"))    : $mysql_pwd;
 
