@@ -1,0 +1,30 @@
+#!/bin/sh
+if [ $# -ne 0 ]; then
+  SITENAME=$1
+else
+  while :
+  do
+    echo -n "please input site name: "
+    read SITENAME
+    if [ "$SITENAME" != "" ]; then
+      break;
+    fi
+  done
+fi
+
+if [ -f /var/www/vhosts/$SITENAME/wp-config.php ]; then
+  exit 0
+fi
+
+echo "start..."
+echo ""
+
+cd /tmp/
+/usr/bin/git clone git://github.com/megumiteam/amimoto.git
+if [ -f /tmp/amimoto/other/wp-setup.sh ]; then
+  /bin/sh /tmp/amimoto/other/wp-setup.sh $SITENAME
+fi
+/bin/rm -Rf /tmp/amimoto
+
+echo ""
+echo "...done"

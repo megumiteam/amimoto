@@ -1,0 +1,34 @@
+#!/bin/sh
+yum update
+yum install -y zip unzip
+
+rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL
+rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-7.noarch.rpm
+yum install -y denyhosts
+service denyhosts start; chkconfig denyhosts on
+
+yum install -y memcached
+service memcached start; chkconfig memcached on
+
+rpm -ivh http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm
+yum install -y nginx
+service nginx start; chkconfig nginx on
+
+rpm -ivh http://rpms.famillecollet.com/enterprise/remi-release-5.rpm
+yum install --enablerepo=remi -y php php-cli php-devel php-mbstring php-gd php-pear php-xml php-fpm php-pecl-apc php-pecl-memcache
+
+rpm --import http://www.percona.com/redir/downloads/percona-release/RPM-GPG-KEY-percona
+rpm -ivh http://www.percona.com/redir/downloads/percona-release/percona-release-0.0-1.x86_64.rpm
+yum install -y Percona-Server-server-55 Percona-Server-client-55 Percona-Server-shared-compat
+service mysql start; chkconfig mysql on
+
+yum install --enablerepo=remi -y php-mysqlnd php-mdo phpMyAdmin
+service php-fpm start; chkconfig php-fpm on
+
+mkdir -p /var/tmp/php/session
+mkdir /var/www/vhosts
+chown -R nginx:nginx /var/tmp/php/session
+chown -R nginx:nginx /var/log/php-fpm
+chown -R nginx:nginx /var/www/vhosts
+
+cp usr/local/bin/wp-setup /usr/local/bin/; chmod +x /usr/local/bin/wp-setup
