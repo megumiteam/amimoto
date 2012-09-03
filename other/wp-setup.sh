@@ -61,7 +61,7 @@ plugin_install "wp-total-hacks.0.9.1.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "flamingo.1.0.1.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "contact-form-7.3.2.1.zip" "$SERVERNAME" > /dev/null 2>&1
 if [ -f /tmp/amimoto/wp-setup.php ]; then
-  /usr/bin/php /tmp/amimoto/wp-setup.php $SERVERNAME $INSTANCEID $PUBLICNAME
+  /usr/bin/php /tmp/amimoto/other/wp-setup.php $SERVERNAME $INSTANCEID $PUBLICNAME
 fi
 echo "... WordPress installed"
 
