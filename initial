@@ -1,7 +1,10 @@
 #!/bin/sh
 yum -y update
-yum install -y zip unzip wget iptabls
+yum install -y zip unzip wget iptables
 
+if [ -f /etc/sysconfig/iptables ]; then
+  mv /etc/sysconfig/iptables /etc/sysconfig/iptables.origin
+fi
 cp etc/sysconfig/iptables /etc/sysconfig/iptables
 service iptables restart
 iptables -L
@@ -37,6 +40,6 @@ chown -R nginx:nginx /var/log/php-fpm
 chown -R nginx:nginx /var/www/vhosts
 
 cp usr/local/bin/wp-setup /usr/local/bin/; chmod +x /usr/local/bin/wp-setup
-cp usr/local/bin/wp-migration /usr/local/bin/; chmod +x /usr/local/bin/wp-migration
+cp usr/local/bin/wp-replace-siteurl /usr/local/bin/; chmod +x /usr/local/bin/wp-replace-siteurl
 
 /usr/local/bin/wp-setup default

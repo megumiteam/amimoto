@@ -5,8 +5,8 @@ switch($argc) {
         echo "please input wp directory name and new site name!\n";
         exit();
     default:
-        $new_site_name = isset($argv[2]) ? $argv[2] : '';
-        $path = $argv[1];
+        $path = $argv[2];
+        $new_site_name = $argv[1];
 }
 
 if ( !file_exists($path.'wp-load.php') && file_exists($path.'wp-config.php') ) {

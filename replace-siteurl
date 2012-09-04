@@ -20,12 +20,7 @@ fi
 echo "migration start..."
 echo ""
 
-cd /tmp/
-/usr/bin/git clone git://github.com/megumiteam/amimoto.git
-if [ -f /tmp/amimoto/migration.php ]; then
-  /bin/php /tmp/amimoto/migration.php $WPDIR $SITENAME
-fi
-/bin/rm -Rf /tmp/amimoto
+/usr/bin/php replace-siteurl.php $SITENAME $WPDIR
 
 echo ""
 echo "...done"
