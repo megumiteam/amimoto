@@ -10,12 +10,13 @@ service denyhosts start; chkconfig denyhosts on
 yum install -y memcached
 service memcached start; chkconfig memcached on
 
+rpm -ivh http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
+yum install --enablerepo=remi -y php php-cli php-devel php-mbstring php-gd php-pear php-xml php-fpm php-pecl-apc php-pecl-memcache
+
+service httpd stop; chkconfig httpd off
 rpm -ivh http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm
 yum install -y nginx
 service nginx start; chkconfig nginx on
-
-rpm -ivh http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
-yum install --enablerepo=remi -y php php-cli php-devel php-mbstring php-gd php-pear php-xml php-fpm php-pecl-apc php-pecl-memcache
 
 rpm --import http://www.percona.com/redir/downloads/percona-release/RPM-GPG-KEY-percona
 rpm -ivh http://www.percona.com/redir/downloads/percona-release/percona-release-0.0-1.x86_64.rpm
