@@ -1,0 +1,26 @@
+#!/bin/sh
+if [ $# -ne 0 ]; then
+  WPDIR=$2
+  SITENAME=$1
+else
+  while :
+  do
+    echo -n "please input site name: "
+    read SITENAME
+    if [ "$SITENAME" != "" ]; then
+      break;
+    fi
+  done
+fi
+
+if [ -f /var/www/vhosts/$SITENAME/wp-config.php ]; then
+  WPDIR=/var/www/vhosts/$SITENAME/
+fi
+
+echo "migration start..."
+echo ""
+
+/bin/php migration.php $WPDIR $SITENAME
+
+echo ""
+echo "...done"
