@@ -20,7 +20,7 @@ fi
 echo "migration start..."
 echo ""
 
-/bin/php migration.php $WPDIR $SITENAME
+/usr/bin/php migration.php $WPDIR $SITENAME
 
 echo ""
 echo "...done"
