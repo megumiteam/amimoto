@@ -1,6 +1,10 @@
 #!/bin/sh
 yum -y update
-yum install -y zip unzip wget
+yum install -y zip unzip wget iptabls
+
+cp etc/sysconfig/iptables /etc/sysconfig/iptables
+service iptables restart
+iptables -L
 
 rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL
 rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-7.noarch.rpm
