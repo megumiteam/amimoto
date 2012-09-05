@@ -6,7 +6,7 @@ if [ -f /etc/sysconfig/iptables ]; then
   mv /etc/sysconfig/iptables /etc/sysconfig/iptables.origin
 fi
 cp etc/sysconfig/iptables /etc/sysconfig/iptables
-service iptables restart
+service iptables restart; chkconfig iptables on
 iptables -L
 
 rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL
