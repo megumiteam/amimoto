@@ -8,7 +8,7 @@ function plugin_install(){
 
 SERVERNAME=$1
 INSTANCEID=default
-TZ=Asia/Tokyo
+TZ="Asia€/Tokyo"
 
 cd /tmp/
 

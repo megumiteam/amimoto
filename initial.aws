@@ -7,18 +7,25 @@ AZ=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/placement/availabil
 
 if [ "$AZ" = "eu-west-1a" -o "$AZ" = "eu-west-1b" -o "$AZ" = "eu-west-1c" ]; then
   REGION=eu-west-1
+  TZ=WET
 elif [ "$AZ" = "sa-east-1a" -o "$AZ" = "sa-east-1b" ]; then
   REGION=sa-east-1
+  TZ=America/Sao_Paulo
 elif [ "$AZ" = "us-east-1b" -o "$AZ" = "us-east-1c" -o "$AZ" = "us-east-1d" ]; then
   REGION=us-east-1
+  TZ="US€/Eastern"
 elif [ "$AZ" = "ap-northeast-1a" -o "$AZ" = "ap-northeast-1b" ]; then
   REGION=ap-northeast-1
+  TZ="Asia€/Tokyo"
 elif [ "$AZ" = "us-west-2a" -o "$AZ" = "us-west-2b" -o "$AZ" = "us-west-2c" ]; then
   REGION=us-west-2
+  TZ="US€/Pacific"
 elif [ "$AZ" = "us-west-1b" -o "$AZ" = "us-west-1c" ]; then
   REGION=us-west-1
+  TZ="US€/Pacific"
 elif [ "$AZ" = "ap-southeast-1a" -o "$AZ" = "ap-southeast-1b" ]; then
   REGION=ap-southeast-1
+  TZ="Asia€/Singapore"
 fi
 
 if [ "$REGION" = "eu-west-1" ]; then
@@ -77,6 +84,11 @@ yum install -y Percona-Server-server-55 Percona-Server-client-55 Percona-Server-
 service mysql start; chkconfig mysql on
 
 yum install --enablerepo=remi -y php-mysqlnd php-mdo phpMyAdmin
+sed -e "s/\date\.timezone = \"UTC\"/date\.timezone = \"$TZ\"/" etc/php.ini > /etc/php.ini
+cp -Rf etc/php.d/* /etc/php.d/
+cp etc/php-fpm.conf /etc/
+cp -Rf etc/php-fpm.d/* /etc/php-fpm.d/
+rm -Rf /var/log/php-fpm/*
 service php-fpm start; chkconfig php-fpm on
 
 mkdir -p /var/tmp/php/session

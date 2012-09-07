@@ -19,19 +19,19 @@ elif [ "$AZ" = "sa-east-1a" -o "$AZ" = "sa-east-1b" ]; then
   TZ=America/Sao_Paulo
 elif [ "$AZ" = "us-east-1b" -o "$AZ" = "us-east-1c" -o "$AZ" = "us-east-1d" ]; then
   REGION=us-east-1
-  TZ=US/Eastern
+  TZ="US\/Eastern"
 elif [ "$AZ" = "ap-northeast-1a" -o "$AZ" = "ap-northeast-1b" ]; then
   REGION=ap-northeast-1
-  TZ=Asia/Tokyo
+  TZ="Asia\/Tokyo"
 elif [ "$AZ" = "us-west-2a" -o "$AZ" = "us-west-2b" -o "$AZ" = "us-west-2c" ]; then
   REGION=us-west-2
-  TZ=US/Pacific
+  TZ="US\/Pacific"
 elif [ "$AZ" = "us-west-1b" -o "$AZ" = "us-west-1c" ]; then
   REGION=us-west-1
-  TZ=US/Pacific
+  TZ="US\/Pacific"
 elif [ "$AZ" = "ap-southeast-1a" -o "$AZ" = "ap-southeast-1b" ]; then
   REGION=ap-southeast-1
-  TZ=Asia/Singapore
+  TZ="Asia\/Singapore"
 fi
 
 cd /tmp/
