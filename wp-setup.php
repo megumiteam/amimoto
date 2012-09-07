@@ -67,7 +67,7 @@ foreach ( $salts as $salt ) {
     if ( preg_match('/define\([\s]*[\'"](AUTH_KEY|SECURE_AUTH_KEY|LOGGED_IN_KEY|NONCE_KEY|AUTH_SALT|SECURE_AUTH_SALT|LOGGED_IN_SALT|NONCE_SALT)[\'"][\s]*,[\s]*[\'"]([^\'"]*)[\'"][\s]*\);/i', $salt, $matches) ) {
         $wp_cfg = preg_replace(
             '/define\([\'"]'.preg_quote($matches[1],'/').'[\'"],[\s]*[\'"][^\'"]*[\'"]\);/i',
-            $matches[0],
+            str_replace('$','\$',$matches[0]),
             $wp_cfg);
     }
     unset($matches);
