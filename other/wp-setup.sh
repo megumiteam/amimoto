@@ -8,14 +8,14 @@ function plugin_install(){
 
 SERVERNAME=$1
 INSTANCEID=default
-TZ="Asia€/Tokyo"
+TZ="Asia\/Tokyo"
 
 cd /tmp/
 
 if [ "$SERVERNAME" = "$INSTANCEID" ]; then
   /bin/mv /etc/localtime /etc/localtime.bak
   /bin/cp -p /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
-  /bin/cp /tmp/ammimoto/etc/motd.jp /etc/motd
+  /bin/cp /tmp/amimoto/etc/motd.jp /etc/motd
 fi
   
 /bin/cp -Rf /tmp/amimoto/etc/nginx/* /etc/nginx/
@@ -34,7 +34,7 @@ fi
 
 if [ "$SERVERNAME" = "$INSTANCEID" ]; then
   /sbin/service php-fpm stop
-  sed -e "s/€date€.timezone = €"UTC€"/date€.timezone = €"$TZ€"/" /tmp/amimoto/etc/php.ini > /etc/php.ini
+  sed -e "s/date\.timezone = \"UTC\"/date\.timezone = \"$TZ\"/" /tmp/amimoto/etc/php.ini > /etc/php.ini
   /bin/cp -Rf /tmp/amimoto/etc/php.d/* /etc/php.d/
   /bin/cp /tmp/amimoto/etc/php-fpm.conf /etc/
   /bin/cp -Rf /tmp/amimoto/etc/php-fpm.d/* /etc/php-fpm.d/
