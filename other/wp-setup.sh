@@ -8,6 +8,7 @@ function plugin_install(){
 
 SERVERNAME=$1
 INSTANCEID=default
+TZ=Asia/Tokyo
 
 cd /tmp/
 
@@ -33,7 +34,7 @@ fi
 
 if [ "$SERVERNAME" = "$INSTANCEID" ]; then
   /sbin/service php-fpm stop
-  /bin/cp /tmp/amimoto/etc/php.ini /etc/
+  sed -e "s/€date€.timezone = €"UTC€"/date€.timezone = €"$TZ€"/" /tmp/amimoto/etc/php.ini > /etc/php.ini
   /bin/cp -Rf /tmp/amimoto/etc/php.d/* /etc/php.d/
   /bin/cp /tmp/amimoto/etc/php-fpm.conf /etc/
   /bin/cp -Rf /tmp/amimoto/etc/php-fpm.d/* /etc/php-fpm.d/

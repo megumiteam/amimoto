@@ -11,12 +11,59 @@ INSTANCEID=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id
 PUBLICNAME=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/public-hostname`
 AZ=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone/`
 
+if [ "$AZ" = "eu-west-1a" -o "$AZ" = "eu-west-1b" -o "$AZ" = "eu-west-1c" ]; then
+  REGION=eu-west-1
+  TZ=WET
+elif [ "$AZ" = "sa-east-1a" -o "$AZ" = "sa-east-1b" ]; then
+  REGION=sa-east-1
+  TZ=America/Sao_Paulo
+elif [ "$AZ" = "us-east-1b" -o "$AZ" = "us-east-1c" -o "$AZ" = "us-east-1d" ]; then
+  REGION=us-east-1
+  TZ=US/Eastern
+elif [ "$AZ" = "ap-northeast-1a" -o "$AZ" = "ap-northeast-1b" ]; then
+  REGION=ap-northeast-1
+  TZ=Asia/Tokyo
+elif [ "$AZ" = "us-west-2a" -o "$AZ" = "us-west-2b" -o "$AZ" = "us-west-2c" ]; then
+  REGION=us-west-2
+  TZ=US/Pacific
+elif [ "$AZ" = "us-west-1b" -o "$AZ" = "us-west-1c" ]; then
+  REGION=us-west-1
+  TZ=US/Pacific
+elif [ "$AZ" = "ap-southeast-1a" -o "$AZ" = "ap-southeast-1b" ]; then
+  REGION=ap-southeast-1
+  TZ=Asia/Singapore
+fi
+
 cd /tmp/
 
-if [ "$SERVERNAME" = "$INSTANCEID" ]; then
+if [ "$SERVERNAME" = "$INSTANCEID" -a "$REGION" = "eu-west-1" ]; then
   /bin/mv /etc/localtime /etc/localtime.bak
-  /bin/cp -p /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+  /bin/ln -s /usr/share/zoneinfo/WET /etc/localtime
+  /bin/cp /tmp/ammimoto/etc/motd /etc/motd
+elif [ "$SERVERNAME" = "$INSTANCEID" -a "$REGION" = "sa-east-1" ]; then
+  /bin/mv /etc/localtime /etc/localtime.bak
+  /bin/ln -s /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
+  /bin/cp /tmp/ammimoto/etc/motd /etc/motd
+elif [ "$SERVERNAME" = "$INSTANCEID" -a "$REGION" = "us-east-1" ]; then
+  /bin/mv /etc/localtime /etc/localtime.bak
+  /bin/ln -s /usr/share/zoneinfo/US/Eastern /etc/localtime
+  /bin/cp /tmp/ammimoto/etc/motd /etc/motd
+elif [ "$SERVERNAME" = "$INSTANCEID" -a "$REGION" = "ap-northeast-1" ]; then
+  /bin/mv /etc/localtime /etc/localtime.bak
+  /bin/ln -s /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
   /bin/cp /tmp/ammimoto/etc/motd.jp /etc/motd
+elif [ "$SERVERNAME" = "$INSTANCEID" -a "$REGION" = "us-west-2" ]; then
+  /bin/mv /etc/localtime /etc/localtime.bak
+  /bin/ln -s /usr/share/zoneinfo/US/Pacific /etc/localtime
+  /bin/cp /tmp/ammimoto/etc/motd /etc/motd
+elif [ "$SERVERNAME" = "$INSTANCEID" -a "$REGION" = "us-west-1" ]; then
+  /bin/mv /etc/localtime /etc/localtime.bak
+  /bin/ln -s /usr/share/zoneinfo/US/Pacific /etc/localtime
+  /bin/cp /tmp/ammimoto/etc/motd /etc/motd
+elif [ "$SERVERNAME" = "$INSTANCEID" -a "$REGION" = "ap-southeast-1" ]; then
+  /bin/mv /etc/localtime /etc/localtime.bak
+  /bin/ln -s /usr/share/zoneinfo/Asia/Singapore /etc/localtime
+  /bin/cp /tmp/ammimoto/etc/motd /etc/motd
 fi
   
 /bin/cp -Rf /tmp/amimoto/etc/nginx/* /etc/nginx/
@@ -35,7 +82,7 @@ fi
 
 if [ "$SERVERNAME" = "$INSTANCEID" ]; then
   /sbin/service php-fpm stop
-  /bin/cp /tmp/amimoto/etc/php.ini /etc/
+  sed -e "s/\date\.timezone = \"UTC\"/date\.timezone = \"$TZ\"/" /tmp/amimoto/etc/php.ini > /etc/php.ini
   /bin/cp -Rf /tmp/amimoto/etc/php.d/* /etc/php.d/
   /bin/cp /tmp/amimoto/etc/php-fpm.conf /etc/
   /bin/cp -Rf /tmp/amimoto/etc/php-fpm.d/* /etc/php-fpm.d/

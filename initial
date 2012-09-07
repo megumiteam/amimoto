@@ -1,4 +1,6 @@
 #!/bin/sh
+mv /etc/localtime /etc/localtime.bak
+ln -s /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 cp etc/motd.jp /etc/motd
 
 yum -y update
