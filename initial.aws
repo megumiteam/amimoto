@@ -11,7 +11,7 @@ if [ "$AZ" = "eu-west-1a" -o "$AZ" = "eu-west-1b" -o "$AZ" = "eu-west-1c" ]; the
 elif [ "$AZ" = "sa-east-1a" -o "$AZ" = "sa-east-1b" ]; then
   REGION=sa-east-1
   TZ="America\/Sao_Paulo"
-elif [ "$AZ" = "us-east-1b" -o "$AZ" = "us-east-1c" -o "$AZ" = "us-east-1d" ]; then
+elif [ "$AZ" = "us-east-1a" -o "$AZ" = "us-east-1b" -o "$AZ" = "us-east-1c" -o "$AZ" = "us-east-1d" -o "$AZ" = "us-east-1e" ]; then
   REGION=us-east-1
   TZ="US\/Eastern"
 elif [ "$AZ" = "ap-northeast-1a" -o "$AZ" = "ap-northeast-1b" ]; then
@@ -20,7 +20,7 @@ elif [ "$AZ" = "ap-northeast-1a" -o "$AZ" = "ap-northeast-1b" ]; then
 elif [ "$AZ" = "us-west-2a" -o "$AZ" = "us-west-2b" -o "$AZ" = "us-west-2c" ]; then
   REGION=us-west-2
   TZ="US\/Pacific"
-elif [ "$AZ" = "us-west-1b" -o "$AZ" = "us-west-1c" ]; then
+elif [ "$AZ" = "us-west-1a" -o "$AZ" = "us-west-1b" -o "$AZ" = "us-west-1c" ]; then
   REGION=us-west-1
   TZ="US\/Pacific"
 elif [ "$AZ" = "ap-southeast-1a" -o "$AZ" = "ap-southeast-1b" ]; then
