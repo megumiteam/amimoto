@@ -11,8 +11,8 @@ switch($argc) {
 }
 
 if ( !file_exists($path.'wp-load.php') && file_exists($path.'wp-config.php') ) {
-	echo "Not found wp-config.php!\n";
-	exit();
+    echo "Not found wp-config.php!\n";
+    exit();
 }
 require_once(file_exists($path.'wp-load.php') ? $path.'wp-load.php' : $path.'wp-config.php');
 
