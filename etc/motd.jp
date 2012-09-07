@@ -3,8 +3,8 @@
     / __ |/  ' \/ /  ' \/ _ \/ __/ _ \
    /_/ |_/_/_/_/_/_/_/_/\___/\__/\___/
 
-CentOS release 6.2 (Final)
-  Nginx + PHP 5.3 + Percona 5.5
+  CentOS release 6.3
+    Nginx 1.2 + PHP 5.3 + Percona 5.5
 
   amimoto     http://ja.megumi-cloud.com/
   digitalcube http://www.digitalcube.jp/
