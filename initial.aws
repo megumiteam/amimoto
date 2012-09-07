@@ -1,5 +1,5 @@
 #!/bin/sh
-cp etc/motd.jp /etc/motd
+cp etc/motd /etc/motd
 
 yum -y update
 yum install -y zip unzip wget iptables
@@ -43,5 +43,3 @@ chown -R nginx:nginx /var/www/vhosts
 
 cp usr/local/bin/wp-setup /usr/local/bin/; chmod +x /usr/local/bin/wp-setup
 cp usr/local/bin/wp-replace-siteurl /usr/local/bin/; chmod +x /usr/local/bin/wp-replace-siteurl
-
-/usr/local/bin/wp-setup default

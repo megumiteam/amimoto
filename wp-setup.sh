@@ -16,6 +16,7 @@ cd /tmp/
 if [ "$SERVERNAME" = "$INSTANCEID" ]; then
   /bin/mv /etc/localtime /etc/localtime.bak
   /bin/cp -p /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+  /bin/cp /tmp/ammimoto/etc/motd.jp /etc/motd
 fi
   
 /bin/cp -Rf /tmp/amimoto/etc/nginx/* /etc/nginx/
