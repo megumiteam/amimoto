@@ -99,9 +99,15 @@ if [ "$SERVERNAME" = "$INSTANCEID" ]; then
 fi
 
 echo "WordPress install ..."
-/usr/bin/wget http://ja.wordpress.org/latest-ja.tar.gz > /dev/null 2>&1
-/bin/tar xvfz /tmp/latest-ja.tar.gz > /dev/null 2>&1
-/bin/rm /tmp/latest-ja.tar.gz
+if [ "$REGION" = "ap-northeast-1" ]; then
+  /usr/bin/wget http://ja.wordpress.org/latest-ja.tar.gz > /dev/null 2>&1
+  /bin/tar xvfz /tmp/latest-ja.tar.gz > /dev/null 2>&1
+  /bin/rm /tmp/latest-ja.tar.gz
+else
+  /usr/bin/wget http://wordpress.org/latest.tar.gz > /dev/null 2>&1
+  /bin/tar xvfz /tmp/latest.tar.gz > /dev/null 2>&1
+  /bin/rm /tmp/latest.tar.gz
+fi
 /bin/mv /tmp/wordpress /var/www/vhosts/$SERVERNAME
 plugin_install "nginx-champuru.1.1.4.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wpbooster-cdn-client.2.0.0.zip" "$SERVERNAME" > /dev/null 2>&1
