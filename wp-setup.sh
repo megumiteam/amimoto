@@ -16,7 +16,7 @@ if [ "$AZ" = "eu-west-1a" -o "$AZ" = "eu-west-1b" -o "$AZ" = "eu-west-1c" ]; the
   TZ=WET
 elif [ "$AZ" = "sa-east-1a" -o "$AZ" = "sa-east-1b" ]; then
   REGION=sa-east-1
-  TZ=America/Sao_Paulo
+  TZ="America\/Sao_Paulo"
 elif [ "$AZ" = "us-east-1b" -o "$AZ" = "us-east-1c" -o "$AZ" = "us-east-1d" ]; then
   REGION=us-east-1
   TZ="US\/Eastern"
