@@ -97,5 +97,5 @@ chown -R nginx:nginx /var/tmp/php/session
 chown -R nginx:nginx /var/log/php-fpm
 chown -R nginx:nginx /var/www/vhosts
 
-cp usr/local/bin/wp-setup /usr/local/bin/; chmod +x /usr/local/bin/wp-setup
+cp usr/local/bin/wp-setup.aws /usr/local/bin/wp-setup; chmod +x /usr/local/bin/wp-setup
 cp usr/local/bin/wp-replace-siteurl /usr/local/bin/; chmod +x /usr/local/bin/wp-replace-siteurl
