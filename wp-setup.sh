@@ -42,30 +42,37 @@ if [ "$SERVERNAME" = "$INSTANCEID" -a "$REGION" = "eu-west-1" ]; then
   /bin/mv /etc/localtime /etc/localtime.bak
   /bin/ln -s /usr/share/zoneinfo/WET /etc/localtime
   /bin/cp /tmp/amimoto/etc/motd /etc/motd
+  /bin/cp /tmp/amimoto/etc/sysconfig/i18n /etc/sysconfig/i18n
 elif [ "$SERVERNAME" = "$INSTANCEID" -a "$REGION" = "sa-east-1" ]; then
   /bin/mv /etc/localtime /etc/localtime.bak
   /bin/ln -s /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
   /bin/cp /tmp/amimoto/etc/motd /etc/motd
+  /bin/cp /tmp/amimoto/etc/sysconfig/i18n /etc/sysconfig/i18n
 elif [ "$SERVERNAME" = "$INSTANCEID" -a "$REGION" = "us-east-1" ]; then
   /bin/mv /etc/localtime /etc/localtime.bak
   /bin/ln -s /usr/share/zoneinfo/US/Eastern /etc/localtime
   /bin/cp /tmp/amimoto/etc/motd /etc/motd
+  /bin/cp /tmp/amimoto/etc/sysconfig/i18n /etc/sysconfig/i18n
 elif [ "$SERVERNAME" = "$INSTANCEID" -a "$REGION" = "ap-northeast-1" ]; then
   /bin/mv /etc/localtime /etc/localtime.bak
   /bin/ln -s /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
   /bin/cp /tmp/amimoto/etc/motd.jp /etc/motd
+  /bin/cp /tmp/amimoto/etc/sysconfig/i18n.jp /etc/sysconfig/i18n
 elif [ "$SERVERNAME" = "$INSTANCEID" -a "$REGION" = "us-west-2" ]; then
   /bin/mv /etc/localtime /etc/localtime.bak
   /bin/ln -s /usr/share/zoneinfo/US/Pacific /etc/localtime
   /bin/cp /tmp/amimoto/etc/motd /etc/motd
+  /bin/cp /tmp/amimoto/etc/sysconfig/i18n /etc/sysconfig/i18n
 elif [ "$SERVERNAME" = "$INSTANCEID" -a "$REGION" = "us-west-1" ]; then
   /bin/mv /etc/localtime /etc/localtime.bak
   /bin/ln -s /usr/share/zoneinfo/US/Pacific /etc/localtime
   /bin/cp /tmp/amimoto/etc/motd /etc/motd
+  /bin/cp /tmp/amimoto/etc/sysconfig/i18n /etc/sysconfig/i18n
 elif [ "$SERVERNAME" = "$INSTANCEID" -a "$REGION" = "ap-southeast-1" ]; then
   /bin/mv /etc/localtime /etc/localtime.bak
   /bin/ln -s /usr/share/zoneinfo/Asia/Singapore /etc/localtime
   /bin/cp /tmp/amimoto/etc/motd /etc/motd
+  /bin/cp /tmp/amimoto/etc/sysconfig/i18n /etc/sysconfig/i18n
 fi
   
 /bin/cp -Rf /tmp/amimoto/etc/nginx/* /etc/nginx/

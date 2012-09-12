@@ -16,6 +16,7 @@ if [ "$SERVERNAME" = "$INSTANCEID" ]; then
   /bin/mv /etc/localtime /etc/localtime.bak
   /bin/cp -p /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
   /bin/cp /tmp/amimoto/etc/motd.jp /etc/motd
+  /bin/cp /tmp/amimoto/etc/sysconfig/i18n.jp /etc/sysconfig/i18n
 fi
   
 /bin/cp -Rf /tmp/amimoto/etc/nginx/* /etc/nginx/
