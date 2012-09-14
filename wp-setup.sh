@@ -22,7 +22,7 @@ elif [ "$AZ" = "sa-east-1a" -o "$AZ" = "sa-east-1b" ]; then
 elif [ "$AZ" = "us-east-1a" -o "$AZ" = "us-east-1b" -o "$AZ" = "us-east-1c" -o "$AZ" = "us-east-1d" -o "$AZ" = "us-east-1e" ]; then
   REGION=us-east-1
   TZ="US\/Eastern"
-elif [ "$AZ" = "ap-northeast-1a" -o "$AZ" = "ap-northeast-1b" ]; then
+elif [ "$AZ" = "ap-northeast-1a" -o "$AZ" = "ap-northeast-1b" -o "$AZ" = "ap-northeast-1c" ]; then
   REGION=ap-northeast-1
   TZ="Asia\/Tokyo"
 elif [ "$AZ" = "us-west-2a" -o "$AZ" = "us-west-2b" -o "$AZ" = "us-west-2c" ]; then
