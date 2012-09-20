@@ -61,6 +61,7 @@ EOT;
 $wp_cfg = preg_replace('/define\([\s]*[\'"]DB_NAME[\'"][\s]*,[\s]*[\'"][^\'"]*[\'"][\s]*\)/i', "define('DB_NAME', '{$mysql_db}')", $wp_cfg);
 $wp_cfg = preg_replace('/define\([\s]*[\'"]DB_USER[\'"][\s]*,[\s]*[\'"][^\'"]*[\'"][\s]*\)/i', "define('DB_USER', '{$mysql_user}')", $wp_cfg);
 $wp_cfg = preg_replace('/define\([\s]*[\'"]DB_PASSWORD[\'"][\s]*,[\s]*[\'"][^\'"]*[\'"][\s]*\)/i', "define('DB_PASSWORD', '{$mysql_pwd}')", $wp_cfg);
+$wp_cfg = preg_replace('/define\([\s]*[\'"]DB_HOST[\'"][\s]*,[\s]*[\'"][^\'"]*[\'"][\s]*\)/i', "define('DB_HOST', 'localhost:/var/lib/mysql/mysql.sock')", $wp_cfg);
 
 $salts  = preg_split('/[\r\n]+/ms', file_get_contents('https://api.wordpress.org/secret-key/1.1/salt/'));
 foreach ( $salts as $salt ) {
