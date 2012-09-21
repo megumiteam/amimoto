@@ -34,6 +34,9 @@ elif [ "$AZ" = "us-west-1a" -o "$AZ" = "us-west-1b" -o "$AZ" = "us-west-1c" ]; t
 elif [ "$AZ" = "ap-southeast-1a" -o "$AZ" = "ap-southeast-1b" ]; then
   REGION=ap-southeast-1
   TZ="Asia\/Singapore"
+else
+  REGION=unknown
+  TZ="UTC"
 fi
 
 cd /tmp/
@@ -71,6 +74,11 @@ elif [ "$SERVERNAME" = "$INSTANCEID" -a "$REGION" = "us-west-1" ]; then
 elif [ "$SERVERNAME" = "$INSTANCEID" -a "$REGION" = "ap-southeast-1" ]; then
   /bin/mv /etc/localtime /etc/localtime.bak
   /bin/ln -s /usr/share/zoneinfo/Asia/Singapore /etc/localtime
+  /bin/cp /tmp/amimoto/etc/motd /etc/motd
+  /bin/cp /tmp/amimoto/etc/sysconfig/i18n /etc/sysconfig/i18n
+elif [ "$SERVERNAME" = "$INSTANCEID" ]; then
+  /bin/mv /etc/localtime /etc/localtime.bak
+  /bin/ln -s /usr/share/zoneinfo/UTC /etc/localtime
   /bin/cp /tmp/amimoto/etc/motd /etc/motd
   /bin/cp /tmp/amimoto/etc/sysconfig/i18n /etc/sysconfig/i18n
 fi
