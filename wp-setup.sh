@@ -127,7 +127,7 @@ else
 fi
 /bin/mv /tmp/wordpress /var/www/vhosts/$SERVERNAME
 plugin_install "nginx-champuru.1.1.5.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "wpbooster-cdn-client.2.2.3.zip" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "wpbooster-cdn-client.2.3.0.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wp-remote-manager-client.0.7.0.2.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "head-cleaner.1.4.2.10.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wp-total-hacks.1.0.2.zip" "$SERVERNAME" > /dev/null 2>&1
