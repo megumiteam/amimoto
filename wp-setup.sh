@@ -126,6 +126,9 @@ else
   /bin/rm /tmp/latest.tar.gz
 fi
 /bin/mv /tmp/wordpress /var/www/vhosts/$SERVERNAME
+if [ -f /tmp/amimoto/wp-setup.php ]; then
+  /usr/bin/php /tmp/amimoto/wp-setup.php $SERVERNAME $INSTANCEID $PUBLICNAME
+fi
 plugin_install "nginx-champuru.1.1.5.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wpbooster-cdn-client.2.3.0.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wp-remote-manager-client.0.7.0.2.zip" "$SERVERNAME" > /dev/null 2>&1
@@ -134,9 +137,6 @@ plugin_install "wp-total-hacks.1.0.2.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "flamingo.1.0.3.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "contact-form-7.3.3.1.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "jetpack.1.8.3.zip" "$SERVERNAME" > /dev/null 2>&1
-if [ -f /tmp/amimoto/wp-setup.php ]; then
-  /usr/bin/php /tmp/amimoto/wp-setup.php $SERVERNAME $INSTANCEID $PUBLICNAME
-fi
 echo "... WordPress installed"
 
 /bin/chown -R nginx:nginx /var/log/nginx
