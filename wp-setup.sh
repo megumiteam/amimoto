@@ -137,7 +137,7 @@ plugin_install "head-cleaner.1.4.2.10.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wp-total-hacks.1.1.0.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "flamingo.1.0.3.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "contact-form-7.3.3.2.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "jetpack.2.0.2.zip" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "jetpack.2.0.4.zip" "$SERVERNAME" > /dev/null 2>&1
 echo "... WordPress installed"
 
 /bin/chown -R nginx:nginx /var/log/nginx
