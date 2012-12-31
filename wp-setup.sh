@@ -130,7 +130,7 @@ if [ -f /tmp/amimoto/wp-setup.php ]; then
   /usr/bin/php /tmp/amimoto/wp-setup.php $SERVERNAME $INSTANCEID $PUBLICNAME
 fi
 /bin/chown -R nginx:nginx /var/log/nginx
-plugin_install "nginx-champuru.1.2.2.zip" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "nginx-champuru.1.3.0.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wpbooster-cdn-client.2.4.1.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wp-remote-manager-client.0.7.0.2.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "head-cleaner.1.4.2.10.zip" "$SERVERNAME" > /dev/null 2>&1
