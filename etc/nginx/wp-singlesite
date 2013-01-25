@@ -1,19 +1,25 @@
-rewrite /wp-admin$ $uri/ permanent;
-
 include /etc/nginx/drop;
 
+# This order might seem weird - this is attempted to match last if rules below fail.
 location / {
-    index  index.php index.html index.htm;
-    # static files
     include /etc/nginx/expires;
-    # request to index.php
-    if (!-e $request_filename) {
-        rewrite ^(.+)$  /index.php?q=$1 last;
-    }
+    try_files $uri $uri/ /index.php?$args;
 }
 
+# Add trailing slash to */wp-admin requests.
+rewrite /wp-admin$ $uri/ permanent;
+
+location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+    include /etc/nginx/expires;
+    log_not_found off;
+}
+
+# Pass all .php files onto a php-fpm/php-fcgi server.
 location ~ \.php$ {
+    try_files $uri =404;
+
     expires        off;
+    fastcgi_split_path_info ^(.+\.php)(/.+)$;
     fastcgi_pass   phpfpm;
     fastcgi_index  index.php;
     fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
