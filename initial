@@ -14,7 +14,7 @@ service iptables restart; chkconfig iptables on
 iptables -L
 
 rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL
-rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-7.noarch.rpm
+rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 yum install -y denyhosts
 service denyhosts start; chkconfig denyhosts on
 
