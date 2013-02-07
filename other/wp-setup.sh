@@ -65,6 +65,7 @@ plugin_install "flamingo.1.0.3.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "contact-form-7.3.3.3.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "jetpack.2.1.2.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "hotfix.1.0.zip" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "hello-claudia.0.4.2.1.zip" "$SERVERNAME" > /dev/null 2>&1
 if [ -f /tmp/amimoto/wp-setup.php ]; then
   /usr/bin/php /tmp/amimoto/other/wp-setup.php $SERVERNAME $INSTANCEID
 fi
