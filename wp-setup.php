@@ -79,7 +79,7 @@ $wp_cfg = preg_replace(
     '$1'."\n\ndefine('NCC_CACHE_DIR', '/var/cache/nginx/proxy_cache');\n\n",
     $wp_cfg);
 
-if ( $instance_id === $site_name ) {
+if ( $instance_id === $site_name && !empty($public_name) ) {
     $wp_cfg = preg_replace(
         '/(table_prefix[\s]*\=[\s]*[\'"][^\'"]*[\'"];)/i',
         '$1'."\n\n".sprintf("//define('WP_SITEURL','http://%1\$s');\n//define('WP_HOME','http://%1\$s');", $public_name),
@@ -102,6 +102,8 @@ echo " MySQL User:     {$mysql_user}\n";
 echo " MySQL Password: {$mysql_pwd}\n";
 echo "--------------------------------------------------\n";
 
-echo "\n";
-printf ("Success!! http://%s/\n", $instance_id === $site_name ? $public_name : $site_name);
-echo "--------------------------------------------------\n";
+if ( $instance_id !== $site_name ) {
+	echo "\n";
+	printf ("Success!! http://%s/\n", $site_name);
+	echo "--------------------------------------------------\n";
+}
