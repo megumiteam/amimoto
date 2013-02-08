@@ -5,8 +5,8 @@ switch($argc) {
         echo "please input site name!\n";
         exit();
     default:
-        $mysql_pwd   = isset($argv[5]) ? $argv[5] : '';
-        $mysql_user  = isset($argv[4]) ? $argv[4] : '';
+//        $mysql_pwd   = isset($argv[5]) ? $argv[5] : '';
+//        $mysql_user  = isset($argv[4]) ? $argv[4] : '';
         $public_name = isset($argv[3]) ? $argv[3] : '';
         $instance_id = isset($argv[2]) ? $argv[2] : '';
         $site_name   = $argv[1];
