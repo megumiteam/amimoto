@@ -83,10 +83,10 @@ elif [ "$SERVERNAME" = "$INSTANCEID" ]; then
   /bin/cp /tmp/amimoto/etc/sysconfig/i18n /etc/sysconfig/i18n
 fi
   
-/bin/cp -Rf /tmp/amimoto/etc/nginx/* /etc/nginx/
-sed -e "s/\$host\([;\.]\)/$INSTANCEID\1/" /tmp/amimoto/etc/nginx/conf.d/default.conf > /etc/nginx/conf.d/default.conf
-sed -e "s/\$host\([;\.]\)/$INSTANCEID\1/" /tmp/amimoto/etc/nginx/conf.d/default.backend.conf > /etc/nginx/conf.d/default.backend.conf
 if [ "$SERVERNAME" = "$INSTANCEID" ]; then
+  /bin/cp -Rf /tmp/amimoto/etc/nginx/* /etc/nginx/
+  sed -e "s/\$host\([;\.]\)/$INSTANCEID\1/" /tmp/amimoto/etc/nginx/conf.d/default.conf > /etc/nginx/conf.d/default.conf
+  sed -e "s/\$host\([;\.]\)/$INSTANCEID\1/" /tmp/amimoto/etc/nginx/conf.d/default.backend.conf > /etc/nginx/conf.d/default.backend.conf
   /sbin/service nginx stop
   /bin/rm -Rf /var/log/nginx/*
   /bin/rm -Rf /var/cache/nginx/*
