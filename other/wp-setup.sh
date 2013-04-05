@@ -56,14 +56,14 @@ echo "WordPress install ..."
 /bin/tar xvfz /tmp/latest-ja.tar.gz > /dev/null 2>&1
 /bin/rm /tmp/latest-ja.tar.gz
 /bin/mv /tmp/wordpress /var/www/vhosts/$SERVERNAME
-plugin_install "nginx-champuru.1.3.0.zip" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "nginx-champuru.1.4.2.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wpbooster-cdn-client.2.5.1.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wp-remote-manager-client.0.7.0.2.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "head-cleaner.1.4.2.10.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wp-total-hacks.1.2.1.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "flamingo.1.0.3.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "contact-form-7.3.3.3.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "jetpack.2.2.1.zip" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "jetpack.2.2.2.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "hotfix.1.0.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "hello-claudia.0.4.2.1.zip" "$SERVERNAME" > /dev/null 2>&1
 if [ -f /tmp/amimoto/wp-setup.php ]; then
