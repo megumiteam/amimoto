@@ -84,7 +84,7 @@ rpm -ivh http://www.percona.com/redir/downloads/percona-release/percona-release-
 yum install -y Percona-Server-server-55 Percona-Server-client-55 Percona-Server-shared-compat
 service mysql start; chkconfig mysql on
 
-yum install --enablerepo=remi -y php-mysqlnd php-mdo phpMyAdmin
+yum install -y php-mysqlnd php-mdo phpMyAdmin
 sed -e "s/\date\.timezone = \"UTC\"/date\.timezone = \"$TZ\"/" etc/php.ini > /etc/php.ini
 cp -Rf etc/php.d/* /etc/php.d/
 cp etc/php-fpm.conf /etc/
