@@ -85,6 +85,10 @@ fi
   
 if [ "$SERVERNAME" = "$INSTANCEID" ]; then
   /bin/cp /dev/null /root/.bash_history > /dev/null 2>&1; history -c
+  /usr/bin/yes | /usr/bin/crontab -r
+fi
+
+if [ "$SERVERNAME" = "$INSTANCEID" ]; then
   /bin/cp -Rf /tmp/amimoto/etc/nginx/* /etc/nginx/
   sed -e "s/\$host\([;\.]\)/$INSTANCEID\1/" /tmp/amimoto/etc/nginx/conf.d/default.conf > /etc/nginx/conf.d/default.conf
   sed -e "s/\$host\([;\.]\)/$INSTANCEID\1/" /tmp/amimoto/etc/nginx/conf.d/default.backend.conf > /etc/nginx/conf.d/default.backend.conf
