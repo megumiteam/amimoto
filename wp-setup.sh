@@ -141,7 +141,7 @@ plugin_install "wp-remote-manager-client.0.7.0.2.zip" "$SERVERNAME" > /dev/null 
 plugin_install "head-cleaner.1.4.2.10.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wp-total-hacks.1.3.0.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "flamingo.1.0.3.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "contact-form-7.3.4.zip" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "contact-form-7.3.4.1.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "nephila-clavata.0.1.5.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "jetpack.2.2.5.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "hotfix.1.0.zip" "$SERVERNAME" > /dev/null 2>&1
