@@ -56,7 +56,7 @@ echo "WordPress install ..."
 /bin/tar xvfz /tmp/latest-ja.tar.gz > /dev/null 2>&1
 /bin/rm /tmp/latest-ja.tar.gz
 /bin/mv /tmp/wordpress /var/www/vhosts/$SERVERNAME
-plugin_install "nginx-champuru.1.4.2.zip" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "nginx-champuru.1.5.0.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wpbooster-cdn-client.2.5.1.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wp-remote-manager-client.0.7.0.2.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "head-cleaner.1.4.2.10.zip" "$SERVERNAME" > /dev/null 2>&1
