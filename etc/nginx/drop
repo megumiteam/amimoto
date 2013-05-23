@@ -1,6 +1,9 @@
-location = /favicon.ico { access_log off; log_not_found off; }
-location = /robots.txt { access_log off; log_not_found off; }
-location = /apple-touch-icon.png { access_log off; log_not_found off; }
-location = /apple-touch-icon-precomposed.png { access_log off; log_not_found off; }
+location = /favicon.ico { access_log /dev/null; log_not_found off; }
+location = /robots.txt { access_log /dev/null; log_not_found off; }
+location = /apple-touch-icon.png { access_log /dev/null; log_not_found off; }
+location = /apple-touch-icon-precomposed.png { access_log /dev/null; log_not_found off; }
 
-location ~ /\. { deny all; access_log off; log_not_found off; }
+location ~ /\. { deny all; access_log /dev/null; log_not_found off; }
+
+location ~* /wp-(config|blog-header|load)\.php$ { access_log /dev/null; log_not_found off; return 404; }
+location ~* (readme|readme-[^\.]+)\.(txt|html?)$ { access_log /dev/null; log_not_found off; return 404; }
