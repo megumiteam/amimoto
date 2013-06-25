@@ -37,6 +37,8 @@ location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
 
 # Pass all .php files onto a php-fpm/php-fcgi server.
 location ~ \.php$ {
+    #limit_req zone=method;
+
     try_files $uri =404;
 
     expires        off;

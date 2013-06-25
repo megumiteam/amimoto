@@ -51,6 +51,8 @@ if (!-e $request_filename) {
 }
  
 location ~ \.php$ {
+    #limit_req zone=method;
+
     try_files $uri =404;
  
     fastcgi_split_path_info ^(.+\.php)(/.+)$;
