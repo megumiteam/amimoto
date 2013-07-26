@@ -143,7 +143,7 @@ plugin_install "wp-total-hacks.1.3.1.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "flamingo.1.0.4.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "contact-form-7.3.4.2.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "nephila-clavata.0.2.0.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "jetpack.2.3.1.zip" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "jetpack.2.3.2.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "hotfix.1.0.zip" "$SERVERNAME" > /dev/null 2>&1
 echo "... WordPress installed"
 
