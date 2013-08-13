@@ -63,7 +63,7 @@ plugin_install "head-cleaner.1.4.2.11.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wp-total-hacks.1.3.1.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "flamingo.1.0.4.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "contact-form-7.3.5.1.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "jetpack.2.3.4.zip" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "jetpack.2.3.5.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "hotfix.1.0.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "hello-claudia.0.4.2.1.zip" "$SERVERNAME" > /dev/null 2>&1
 if [ -f /tmp/amimoto/wp-setup.php ]; then
