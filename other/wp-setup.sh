@@ -52,20 +52,22 @@ if [ "$SERVERNAME" = "$INSTANCEID" ]; then
 fi
 
 echo "WordPress install ..."
-/usr/bin/wget http://ja.wordpress.org/latest-ja.tar.gz > /dev/null 2>&1
-/bin/tar xvfz /tmp/latest-ja.tar.gz > /dev/null 2>&1
-/bin/rm /tmp/latest-ja.tar.gz
-/bin/mv /tmp/wordpress /var/www/vhosts/$SERVERNAME
-plugin_install "nginx-champuru.1.6.1.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "wpbooster-cdn-client.2.6.0.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "wp-remote-manager-client.0.7.0.2.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "head-cleaner.1.4.2.11.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "wp-total-hacks.1.3.1.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "flamingo.1.0.4.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "contact-form-7.3.5.2.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "jetpack.2.4.2.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "hotfix.1.0.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "hello-claudia.0.4.2.1.zip" "$SERVERNAME" > /dev/null 2>&1
+if [ ! -f $HOME/.wp-cli/bin/wp ]; then
+  /usr/bin/curl https://raw.github.com/wp-cli/wp-cli.github.com/master/installer.sh | /bin/bash
+fi
+mkdir /var/www/vhosts/$SERVERNAME
+cd /var/www/vhosts/$SERVERNAME
+$HOME/.wp-cli/bin/wp core download --locale=ja
+plugin_install "nginx-champuru.zip" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "wpbooster-cdn-client.zip" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "wp-remote-manager-client.zip" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "head-cleaner.zip" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "wp-total-hacks.zip" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "flamingo.zip" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "contact-form-7.zip" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "jetpack.zip" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "hotfix.zip" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "hello-claudia.zip" "$SERVERNAME" > /dev/null 2>&1
 if [ -f /tmp/amimoto/wp-setup.php ]; then
   /usr/bin/php /tmp/amimoto/other/wp-setup.php $SERVERNAME $INSTANCEID
 fi
