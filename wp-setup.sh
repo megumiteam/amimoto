@@ -99,6 +99,18 @@ fi
   
 if [ "$SERVERNAME" = "$INSTANCEID" ]; then
   /bin/cp /dev/null /root/.bash_history > /dev/null 2>&1; history -c
+  echo '# .bash_profile
+
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+        . ~/.bashrc
+fi
+
+# User specific environment and startup programs
+
+PATH=$PATH:/usr/local/bin:$HOME/bin:$HOME/.wp-cli/bin
+
+export PATH' > $HOME/.bash_profile
   /usr/bin/yes | /usr/bin/crontab -r
 fi
 
