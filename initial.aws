@@ -71,7 +71,8 @@ yum install -y memcached
 service memcached start; chkconfig memcached on
 
 #rpm -ivh http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
-yum install -y php php-cli php-devel php-mbstring php-gd php-pear php-xml php-fpm php-pecl-apc php-pecl-memcache
+#yum install -y php php-cli php-devel php-mbstring php-gd php-pear php-xml php-fpm php-mcrypt php-pecl-apc php-pecl-memcache
+yum install -y php54 php54-cli php54-devel php54-mbstring php54-gd php54-pear php54-xml php54-fpm ph54-mcrypt php54-pecl-apc php54-pecl-memcache
 
 service httpd stop > /dev/null 2>&1; chkconfig httpd off
 #rpm -ivh http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm
@@ -84,7 +85,8 @@ rpm -ivh http://www.percona.com/redir/downloads/percona-release/percona-release-
 yum install -y Percona-Server-server-55 Percona-Server-client-55 Percona-Server-shared-compat
 service mysql start; chkconfig mysql on
 
-yum install -y php-mysqlnd php-mdo phpMyAdmin
+#yum install -y php-mysqlnd php-mdo phpMyAdmin
+yum install -y php54-mysqlnd php54-mdo phpMyAdmin
 sed -e "s/\date\.timezone = \"UTC\"/date\.timezone = \"$TZ\"/" etc/php.ini > /etc/php.ini
 cp -Rf etc/php.d/* /etc/php.d/
 cp etc/php-fpm.conf /etc/
