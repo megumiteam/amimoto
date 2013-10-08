@@ -14,14 +14,9 @@ cd /tmp
 /usr/bin/git clone git://github.com/opscode/chef-repo.git
 cd /tmp/chef-repo/cookbooks
 /usr/bin/git clone git://github.com/megumiteam/chef-amimoto.git amimoto
-
 cd /tmp/chef-repo/
-echo '// amimoto.json
-{
-	"run_list" : [ "recipe[amimoto]" ]
-}' > /tmp/chef-repo/amimoto.json
-echo '# solo.rb
-file_cache_path "/ tmp /chef - solo "
+echo '{ "run_list" : [ "recipe[amimoto]" ] }' > /tmp/chef-repo/amimoto.json
+echo 'file_cache_path "/tmp/chef-solo"
 cookbook_path ["/tmp/chef-repo/cookbooks"]' > /tmp/chef-repo/solo.rb
 /usr/bin/chef-solo -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
 /bin/rm -rf /tmp/chef-repo/
