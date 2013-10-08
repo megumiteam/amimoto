@@ -72,7 +72,7 @@ service memcached start; chkconfig memcached on
 
 #rpm -ivh http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
 #yum install -y php php-cli php-devel php-mbstring php-gd php-pear php-xml php-fpm php-mcrypt php-pecl-apc php-pecl-memcache
-yum install -y php54 php54-cli php54-devel php54-mbstring php54-gd php54-pear php54-xml php54-fpm ph54-mcrypt php54-pecl-apc php54-pecl-memcache
+yum install -y php54 php54-cli php54-devel php54-mbstring php54-gd php-pear php54-xml php54-fpm php54-mcrypt php54-pecl-apc php54-pecl-memcache
 
 service httpd stop > /dev/null 2>&1; chkconfig httpd off
 #rpm -ivh http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm
