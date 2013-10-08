@@ -13,7 +13,7 @@ SERVERNAME=$INSTANCEID
 cd /tmp
 /usr/bin/git clone git://github.com/opscode/chef-repo.git
 cd /tmp/chef-repo/cookbooks
-/usr/bin/git clone git://github.com/megumiteam/chef-amimoto.git
+/usr/bin/git clone git://github.com/megumiteam/chef-amimoto.git amimoto
 
 cd /tmp/chef-repo/
 echo '// amimoto.json
