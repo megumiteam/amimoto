@@ -65,6 +65,7 @@ fi
 /usr/bin/yes | /usr/bin/crontab -r
 
 /sbin/service nginx stop
+/bin/cp -Rf /tmp/amimoto/etc/nginx/conf.d/* /etc/nginx/conf.d/
 /bin/rm -Rf /var/log/nginx/*
 /bin/rm -Rf /var/cache/nginx/*
 /sbin/service nginx start
