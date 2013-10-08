@@ -65,7 +65,8 @@ fi
 /usr/bin/yes | /usr/bin/crontab -r
 
 /sbin/service nginx stop
-/bin/cp -Rf /tmp/amimoto/etc/nginx/conf.d/* /etc/nginx/conf.d/
+/bin/sed -e "s/\$host\([;\.]\)/$INSTANCEID\1/" /tmp/amimoto/etc/nginx/conf.d/default.conf > /etc/nginx/conf.d/default.conf
+/bin/sed -e "s/\$host\([;\.]\)/$INSTANCEID\1/" /tmp/amimoto/etc/nginx/conf.d/default.backend.conf > /etc/nginx/conf.d/default.backend.conf
 /bin/rm -Rf /var/log/nginx/*
 /bin/rm -Rf /var/cache/nginx/*
 /sbin/service nginx start
