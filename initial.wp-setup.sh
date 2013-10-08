@@ -15,6 +15,9 @@ cd /usr/local/src/chef-repo/cookbooks/amimoto/
 /usr/bin/chef-solo -c /usr/local/src/chef-repo/solo.rb -j /usr/local/src/chef-repo/amimoto.json
 /bin/rm -rf /usr/local/src/chef-repo/
 
+cd /tmp
+/usr/bin/git clone git://github.com/megumiteam/amimoto.git
+
 if [ "$AZ" = "eu-west-1a" -o "$AZ" = "eu-west-1b" -o "$AZ" = "eu-west-1c" ]; then
   REGION=eu-west-1
 elif [ "$AZ" = "sa-east-1a" -o "$AZ" = "sa-east-1b" ]; then
