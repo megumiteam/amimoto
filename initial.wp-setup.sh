@@ -57,6 +57,7 @@ else
 fi
   
 /bin/cp /dev/null /root/.bash_history > /dev/null 2>&1; history -c
+/bin/cp /dev/null /home/ec2-user/.bash_history > /dev/null 2>&1
 /usr/bin/yes | /usr/bin/crontab -r
 
 /sbin/service nginx stop
