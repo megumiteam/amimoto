@@ -48,12 +48,10 @@ if [ "$REGION" = "ap-northeast-1" ]; then
   /bin/cp /tmp/amimoto/etc/motd /etc/motd
   /bin/cat /etc/system-release >> /etc/motd
   /bin/cat /tmp/amimoto/etc/motd.jp >> /etc/motd
-  /bin/cp /tmp/amimoto/etc/sysconfig/i18n.jp /etc/sysconfig/i18n
 else
   /bin/cp /tmp/amimoto/etc/motd /etc/motd
   /bin/cat /etc/system-release >> /etc/motd
   /bin/cat /tmp/amimoto/etc/motd.en >> /etc/motd
-  /bin/cp /tmp/amimoto/etc/sysconfig/i18n /etc/sysconfig/i18n
 fi
   
 /bin/cp /dev/null /root/.bash_history > /dev/null 2>&1; history -c
@@ -61,8 +59,6 @@ fi
 /usr/bin/yes | /usr/bin/crontab -r
 
 /sbin/service nginx stop
-/bin/sed -e "s/\$host\([;\.]\)/$INSTANCEID\1/" /tmp/amimoto/etc/nginx/conf.d/default.conf > /etc/nginx/conf.d/default.conf
-/bin/sed -e "s/\$host\([;\.]\)/$INSTANCEID\1/" /tmp/amimoto/etc/nginx/conf.d/default.backend.conf > /etc/nginx/conf.d/default.backend.conf
 /bin/rm -Rf /var/log/nginx/*
 /bin/rm -Rf /var/cache/nginx/*
 /sbin/service nginx start
