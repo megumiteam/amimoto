@@ -10,6 +10,10 @@ INSTANCEID=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id
 AZ=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone/`
 SERVERNAME=$INSTANCEID
 
+/sbin/service mysql stop
+/sbin/service nginx stop
+/sbin/service php-fpm stop
+
 /bin/mkdir /var/www/vhosts/${INSTANCEID}
 echo '<html>
 <head>
