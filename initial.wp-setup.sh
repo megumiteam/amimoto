@@ -10,6 +10,16 @@ INSTANCEID=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id
 AZ=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone/`
 SERVERNAME=$INSTANCEID
 
+/bin/mkdir /var/www/vhosts/${INSTANCEID}
+echo '<html>
+<head>
+<title>Setting up your WordPress now.</title>
+</head>
+ <body>
+<p>Setting up your WordPress now.</p>
+<p>After a while please reload your web browser.</p>
+</body>' > /var/www/vhosts/${INSTANCEID}/index.html
+
 cd /tmp
 /usr/bin/git clone git://github.com/opscode/chef-repo.git
 cd /tmp/chef-repo/cookbooks
@@ -53,7 +63,7 @@ else
   /bin/cat /etc/system-release >> /etc/motd
   /bin/cat /tmp/amimoto/etc/motd.en >> /etc/motd
 fi
-  
+
 /bin/cp /dev/null /root/.bash_history > /dev/null 2>&1; history -c
 /bin/cp /dev/null /home/ec2-user/.bash_history > /dev/null 2>&1
 /usr/bin/yes | /usr/bin/crontab -r
@@ -95,6 +105,8 @@ plugin_install "nephila-clavata.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "jetpack.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "hotfix.zip" "$SERVERNAME" > /dev/null 2>&1
 echo "... WordPress installed"
+
+/bin/rm /var/www/vhosts/${INSTANCEID}/index.html
 
 /bin/chown -R nginx:nginx /var/log/nginx
 /bin/chown -R nginx:nginx /var/log/php-fpm
