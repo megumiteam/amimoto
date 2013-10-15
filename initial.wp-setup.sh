@@ -11,8 +11,11 @@ AZ=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/placement/availabil
 SERVERNAME=$INSTANCEID
 
 /sbin/service mysql stop
-/sbin/service nginx stop
-/sbin/service php-fpm stop
+#/sbin/service nginx stop
+#/sbin/service php-fpm stop
+/bin/cp /dev/null /root/.bash_history > /dev/null 2>&1; history -c
+/bin/cp /dev/null /home/ec2-user/.bash_history > /dev/null 2>&1
+/usr/bin/yes | /usr/bin/crontab -r
 
 /bin/mkdir /var/www/vhosts/${INSTANCEID}
 echo '<html>
@@ -67,10 +70,6 @@ else
   /bin/cat /etc/system-release >> /etc/motd
   /bin/cat /tmp/amimoto/etc/motd.en >> /etc/motd
 fi
-
-/bin/cp /dev/null /root/.bash_history > /dev/null 2>&1; history -c
-/bin/cp /dev/null /home/ec2-user/.bash_history > /dev/null 2>&1
-/usr/bin/yes | /usr/bin/crontab -r
 
 /sbin/service nginx stop
 /bin/rm -Rf /var/log/nginx/*
