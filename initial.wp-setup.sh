@@ -6,6 +6,13 @@ function plugin_install(){
   /bin/rm /tmp/$1
 }
 
+if [ ! -d /etc/chef/ohai/hints ]; then
+  mkdir -p /etc/chef/ohai/hints
+fi
+if [ ! -f /etc/chef/ohai/hints/ec2.json ]; then
+  echo '{}' > /etc/chef/ohai/hints/ec2.json
+fi
+
 INSTANCEID=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id`
 AZ=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone/`
 SERVERNAME=$INSTANCEID
