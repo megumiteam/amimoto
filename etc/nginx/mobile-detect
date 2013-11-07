@@ -7,3 +7,9 @@ if ($http_user_agent ~* '(iPhone|iPod|incognito|webmate|Android|dream|CUPCAKE|fr
 if ($http_cookie ~* "wptouch(_switch_cookie=normal|-pro-view=desktop)") {
     set $mobile "@smartphone.off";
 }
+
+location ~* @(ktai|smartphone|smartphone\.off)$ {
+    access_log /dev/null;
+    log_not_found off;
+    return 404;
+}
