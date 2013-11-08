@@ -122,6 +122,13 @@ echo "... WordPress installed"
 /bin/chown -R nginx:nginx /var/log/php-fpm
 /bin/chown -R nginx:nginx /var/cache/nginx
 /bin/chown -R nginx:nginx /var/tmp/php
+/bin/chown -R nginx:nginx /var/lib/php
 /bin/chown -R nginx:nginx /var/www/vhosts/$SERVERNAME
+
+cd /usr/share/
+/usr/bin/wget http://sourceforge.net/projects/phpmyadmin/files/phpMyAdmin/4.0.9/phpMyAdmin-4.0.9-all-languages.zip
+/usr/bin/unzip /usr/share/phpMyAdmin-4.0.9-all-languages.zip
+/bin/rm /usr/share/phpMyAdmin-4.0.9-all-languages.zip
+/bin/ln -s /usr/share/phpMyAdmin-4.0.9-all-languages /usr/share/phpMyAdmin
 
 /bin/rm -rf /tmp/amimoto
