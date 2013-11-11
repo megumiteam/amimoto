@@ -76,7 +76,7 @@ foreach ( $salts as $salt ) {
 
 $wp_cfg = preg_replace(
     '/(table_prefix[\s]*\=[\s]*[\'"][^\'"]*[\'"];)/i',
-    '$1'."\n\ndefine('NCC_CACHE_DIR', '/var/cache/nginx/proxy_cache');\n\n",
+    '$1'."\n\ndefine('IS_AMIMOTO', true);\ndefine('NCC_CACHE_DIR', '/var/cache/nginx/proxy_cache');\n",
     $wp_cfg);
 
 if ( $instance_id === $site_name && !empty($public_name) ) {

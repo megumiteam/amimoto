@@ -96,7 +96,7 @@ elif [ "$SERVERNAME" = "$INSTANCEID" ]; then
   /bin/cat /tmp/amimoto/etc/motd.en >> /etc/motd
   /bin/cp /tmp/amimoto/etc/sysconfig/i18n /etc/sysconfig/i18n
 fi
-  
+
 if [ "$SERVERNAME" = "$INSTANCEID" ]; then
   /bin/cp /dev/null /root/.bash_history > /dev/null 2>&1; history -c
   echo '# .bash_profile
