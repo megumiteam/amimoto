@@ -173,8 +173,16 @@ plugin_install "jetpack.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "hotfix.zip" "$SERVERNAME" > /dev/null 2>&1
 echo "... WordPress installed"
 
+if [ ! -d /var/tmp/php ]; then
+  mkdir -p /var/tmp/php
+fi
+if [ ! -d /var/lib/php ]; then
+  mkdir -p /var/lib/php
+fi
+
 /bin/chown -R nginx:nginx /var/log/nginx
 /bin/chown -R nginx:nginx /var/log/php-fpm
 /bin/chown -R nginx:nginx /var/cache/nginx
 /bin/chown -R nginx:nginx /var/tmp/php
+/bin/chown -R nginx:nginx /var/lib/php
 /bin/chown -R nginx:nginx /var/www/vhosts/$SERVERNAME
