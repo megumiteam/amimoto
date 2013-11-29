@@ -7,3 +7,4 @@ location ~ /\. { deny all; access_log /dev/null; log_not_found off; }
 
 location ~* /wp-(config|blog-header)\.php$ { access_log /dev/null; log_not_found off; return 404; }
 location ~* (readme|readme-[^\.]+)\.(txt|html?)$ { access_log /dev/null; log_not_found off; return 404; }
+location ~* .*\.(cache|sql|log)$ { access_log /dev/null; log_not_found off; return 404; }
