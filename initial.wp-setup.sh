@@ -16,16 +16,14 @@ fi
 INSTANCEID=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id`
 AZ=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone/`
 SERVERNAME=$INSTANCEID
-CF_PATTERN=`/usr/bin/curl -s https://raw.github.com/megumiteam/amimoto/master/cf_patern_check.php | /usr/bin/php`
 
 /sbin/service mysql stop
 /bin/cp /dev/null /root/.bash_history > /dev/null 2>&1; history -c
 /bin/cp /dev/null /home/ec2-user/.bash_history > /dev/null 2>&1
 /usr/bin/yes | /usr/bin/crontab -r
 
-if [ "$CF_PATTERN" != "nfs_client" ]; then
-  /bin/mkdir /var/www/vhosts/${INSTANCEID}
-  echo '<html>
+/bin/mkdir /var/www/vhosts/${INSTANCEID}
+echo '<html>
 <head>
 <title>Setting up your WordPress now.</title>
 </head>
@@ -33,7 +31,6 @@ if [ "$CF_PATTERN" != "nfs_client" ]; then
 <p>Setting up your WordPress now.</p>
 <p>After a while please reload your web browser.</p>
 </body>' > /var/www/vhosts/${INSTANCEID}/index.html
-fi
 
 cd /tmp
 /usr/bin/git clone git://github.com/opscode/chef-repo.git
@@ -44,11 +41,15 @@ echo '{ "run_list" : [ "recipe[amimoto]" ] }' > /tmp/chef-repo/amimoto.json
 echo 'file_cache_path "/tmp/chef-solo"
 cookbook_path ["/tmp/chef-repo/cookbooks"]' > /tmp/chef-repo/solo.rb
 /usr/bin/chef-solo -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
+CF_PATTERN=`/usr/bin/curl -s https://raw.github.com/megumiteam/amimoto/master/cf_patern_check.php | /usr/bin/php`
 if [ "$CF_PATTERN" = "nfs_server" ]; then
   /usr/bin/chef-solo -o amimoto::nfs_dispatcher -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
 fi
 if [ "$CF_PATTERN" = "nfs_client" ]; then
   /usr/bin/chef-solo -o amimoto::nfs_dispatcher -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
+  if [ -d /var/www/vhosts/${INSTANCEID} ]; then
+    /binrm -rf /var/www/vhosts/${INSTANCEID}
+  fi
 fi
 /bin/rm -rf /tmp/chef-repo/
 
