@@ -23,7 +23,7 @@ CF_PATTERN=`/usr/bin/php /tmp/amimoto/cf_patern_check.php`
 /bin/cp /dev/null /home/ec2-user/.bash_history > /dev/null 2>&1
 /usr/bin/yes | /usr/bin/crontab -r
 
-if [ '$CF_PATTERN' != 'nfs_client' ]; then
+if [ "$CF_PATTERN" != "nfs_client" ]; then
   /bin/mkdir /var/www/vhosts/${INSTANCEID}
   echo '<html>
 <head>
