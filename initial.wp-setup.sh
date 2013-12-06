@@ -16,16 +16,16 @@ fi
 INSTANCEID=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id`
 AZ=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone/`
 SERVERNAME=$INSTANCEID
+CF_PATTERN=`/usr/bin/php /tmp/amimoto/cf_patern_check.php`
 
 /sbin/service mysql stop
-#/sbin/service nginx stop
-#/sbin/service php-fpm stop
 /bin/cp /dev/null /root/.bash_history > /dev/null 2>&1; history -c
 /bin/cp /dev/null /home/ec2-user/.bash_history > /dev/null 2>&1
 /usr/bin/yes | /usr/bin/crontab -r
 
-/bin/mkdir /var/www/vhosts/${INSTANCEID}
-echo '<html>
+if [ '$CF_PATTERN' != 'nfs_client' ]; then
+  /bin/mkdir /var/www/vhosts/${INSTANCEID}
+  echo '<html>
 <head>
 <title>Setting up your WordPress now.</title>
 </head>
@@ -33,6 +33,7 @@ echo '<html>
 <p>Setting up your WordPress now.</p>
 <p>After a while please reload your web browser.</p>
 </body>' > /var/www/vhosts/${INSTANCEID}/index.html
+fi
 
 cd /tmp
 /usr/bin/git clone git://github.com/opscode/chef-repo.git
@@ -43,6 +44,12 @@ echo '{ "run_list" : [ "recipe[amimoto]" ] }' > /tmp/chef-repo/amimoto.json
 echo 'file_cache_path "/tmp/chef-solo"
 cookbook_path ["/tmp/chef-repo/cookbooks"]' > /tmp/chef-repo/solo.rb
 /usr/bin/chef-solo -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
+if [ '$CF_PATTERN' = 'nfs_server' ]; then
+  /usr/bin/chef-solo -o amimoto::nfs_dispatcher -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
+fi
+if [ '$CF_PATTERN' = 'nfs_client' ]; then
+  /usr/bin/chef-solo -o amimoto::nfs_dispatcher -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
+fi
 /bin/rm -rf /tmp/chef-repo/
 
 cd /tmp
@@ -92,43 +99,50 @@ fi
 /bin/rm /var/log/mysqld.log*
 /sbin/service mysql start
 
-echo "WordPress install ..."
-mkdir /var/www/vhosts/$SERVERNAME
-cd /var/www/vhosts/$SERVERNAME
-if [ "$REGION" = "ap-northeast-1" ]; then
-  /usr/bin/wp core download --locale=ja
-else
-  /usr/bin/wp core download
-fi
-if [ -f /tmp/amimoto/wp-setup.php ]; then
-  /usr/bin/php /tmp/amimoto/wp-setup.php $SERVERNAME $INSTANCEID $PUBLICNAME
-fi
-/bin/chown -R nginx:nginx /var/log/nginx
-plugin_install "nginx-champuru.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "wpbooster-cdn-client.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "wp-remote-manager-client.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "head-cleaner.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "wp-total-hacks.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "flamingo.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "contact-form-7.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "nephila-clavata.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "jetpack.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "hotfix.zip" "$SERVERNAME" > /dev/null 2>&1
-echo "... WordPress installed"
+if [ "$CF_PATTERN" != "nfs_client" ]; then
+  echo "WordPress install ..."
+  if [ ! -d /var/www/vhosts/$SERVERNAME ]; then
+    mkdir /var/www/vhosts/$SERVERNAME
+  fi
+  cd /var/www/vhosts/$SERVERNAME
+  if [ "$REGION" = "ap-northeast-1" ]; then
+    /usr/bin/wp core download --locale=ja
+  else
+    /usr/bin/wp core download
+  fi
+  if [ -f /tmp/amimoto/wp-setup.php ]; then
+    /usr/bin/php /tmp/amimoto/wp-setup.php $SERVERNAME $INSTANCEID $PUBLICNAME
+  fi
+  plugin_install "nginx-champuru.zip" "$SERVERNAME" > /dev/null 2>&1
+  plugin_install "wpbooster-cdn-client.zip" "$SERVERNAME" > /dev/null 2>&1
+  plugin_install "wp-remote-manager-client.zip" "$SERVERNAME" > /dev/null 2>&1
+  plugin_install "head-cleaner.zip" "$SERVERNAME" > /dev/null 2>&1
+  plugin_install "wp-total-hacks.zip" "$SERVERNAME" > /dev/null 2>&1
+  plugin_install "flamingo.zip" "$SERVERNAME" > /dev/null 2>&1
+  plugin_install "contact-form-7.zip" "$SERVERNAME" > /dev/null 2>&1
+  plugin_install "nephila-clavata.zip" "$SERVERNAME" > /dev/null 2>&1
+  plugin_install "jetpack.zip" "$SERVERNAME" > /dev/null 2>&1
+  plugin_install "hotfix.zip" "$SERVERNAME" > /dev/null 2>&1
+  echo "... WordPress installed"
 
-/bin/rm /var/www/vhosts/${INSTANCEID}/index.html
+  /bin/rm /var/www/vhosts/${INSTANCEID}/index.html
+  /bin/chown -R nginx:nginx /var/cache/nginx
+  /bin/chown -R nginx:nginx /var/www/vhosts/$SERVERNAME
+fi
 
 /bin/chown -R nginx:nginx /var/log/nginx
 /bin/chown -R nginx:nginx /var/log/php-fpm
-/bin/chown -R nginx:nginx /var/cache/nginx
 /bin/chown -R nginx:nginx /var/tmp/php
 /bin/chown -R nginx:nginx /var/lib/php
-/bin/chown -R nginx:nginx /var/www/vhosts/$SERVERNAME
 
-cd /usr/share/
-/usr/bin/wget http://sourceforge.net/projects/phpmyadmin/files/phpMyAdmin/4.0.9/phpMyAdmin-4.0.9-all-languages.zip
-/usr/bin/unzip /usr/share/phpMyAdmin-4.0.9-all-languages.zip
-/bin/rm /usr/share/phpMyAdmin-4.0.9-all-languages.zip
-/bin/ln -s /usr/share/phpMyAdmin-4.0.9-all-languages /usr/share/phpMyAdmin
+PHP_MY_ADMIN_VER="4.0.9"
+PHP_MY_ADMIN="phpMyAdmin-${PHP_MY_ADMIN_VER}-all-languages"
+if [ ! -d /usr/share/phpMyAdmin/${PHP_MY_ADMIN} ]; then
+  cd /usr/share/
+  /usr/bin/wget http://sourceforge.net/projects/phpmyadmin/files/phpMyAdmin/${PHP_MY_ADMIN_VER}/${PHP_MY_ADMIN}.zip
+  /usr/bin/unzip /usr/share/${PHP_MY_ADMIN}.zip
+  /bin/rm /usr/share/${PHP_MY_ADMIN}.zip
+  /bin/ln -s /usr/share/${PHP_MY_ADMIN} /usr/share/phpMyAdmin
+fi
 
 /bin/rm -rf /tmp/amimoto
