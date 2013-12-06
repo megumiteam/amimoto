@@ -44,10 +44,10 @@ echo '{ "run_list" : [ "recipe[amimoto]" ] }' > /tmp/chef-repo/amimoto.json
 echo 'file_cache_path "/tmp/chef-solo"
 cookbook_path ["/tmp/chef-repo/cookbooks"]' > /tmp/chef-repo/solo.rb
 /usr/bin/chef-solo -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
-if [ '$CF_PATTERN' = 'nfs_server' ]; then
+if [ "$CF_PATTERN" = "nfs_server" ]; then
   /usr/bin/chef-solo -o amimoto::nfs_dispatcher -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
 fi
-if [ '$CF_PATTERN' = 'nfs_client' ]; then
+if [ "$CF_PATTERN" = "nfs_client" ]; then
   /usr/bin/chef-solo -o amimoto::nfs_dispatcher -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
 fi
 /bin/rm -rf /tmp/chef-repo/
