@@ -16,7 +16,7 @@ fi
 INSTANCEID=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id`
 AZ=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone/`
 SERVERNAME=$INSTANCEID
-CF_PATTERN=`/usr/bin/php /tmp/amimoto/cf_patern_check.php`
+CF_PATTERN=`/usr/bin/curl -s https://raw.github.com/megumiteam/amimoto/master/cf_patern_check.php | /usr/bin/php`
 
 /sbin/service mysql stop
 /bin/cp /dev/null /root/.bash_history > /dev/null 2>&1; history -c
