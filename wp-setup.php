@@ -13,6 +13,7 @@ switch($argc) {
 $mysql_db   = $site_name !== 'default' ? str_replace(array('.','-'), '_', $site_name) : 'wordpress';
 $mysql_user = empty($mysql_user) ? substr('wp_'.md5($mysql_db),0,16) : $mysql_user;
 $mysql_pwd  = empty($mysql_pwd)  ? md5(mt_rand().date("YmdHisu"))    : $mysql_pwd;
+$mysql_host = 'localhost';
 
 // make user and database
 $link = @mysql_connect('localhost:3307', 'root', '');
@@ -170,10 +171,10 @@ if ( !defined('ABSPATH') )
 require_once(ABSPATH . 'wp-settings.php');
 EOT;
 
-$wp_cfg = str_replace('%DB_NAME%', $mysql_db, $wp_cfg);
-$wp_cfg = str_replace('%DB_USER%', $mysql_user, $wp_cfg);
-$wp_cfg = str_replace('%DB_PASSWORD%', $mysql_pwd, $wp_cfg);
-$wp_cfg = str_replace('%DB_HOST%', 'localhost:/var/lib/mysql/mysql.sock', $wp_cfg);
+$wp_cfg = str_replace('%DB_NAME%',     $mysql_db,   $wp_cfg);
+$wp_cfg = str_replace('%DB_USER%',     $mysql_user, $wp_cfg);
+$wp_cfg = str_replace('%DB_PASSWORD%', $mysql_pwd,  $wp_cfg);
+$wp_cfg = str_replace('%DB_HOST%',     $mysql_host, $wp_cfg);
 
 $salts  = preg_split('/[\r\n]+/ms', file_get_contents('https://api.wordpress.org/secret-key/1.1/salt/'));
 foreach ( $salts as $salt ) {
