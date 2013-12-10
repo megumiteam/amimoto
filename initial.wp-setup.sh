@@ -22,7 +22,9 @@ SERVERNAME=$INSTANCEID
 /bin/cp /dev/null /home/ec2-user/.bash_history > /dev/null 2>&1
 /usr/bin/yes | /usr/bin/crontab -r
 
-/bin/mkdir /var/www/vhosts/${INSTANCEID}
+if [ ! -d /var/www/vhosts/${INSTANCEID} ]; then
+  /bin/mkdir -p /var/www/vhosts/${INSTANCEID}
+fi
 echo '<html>
 <head>
 <title>Setting up your WordPress now.</title>
