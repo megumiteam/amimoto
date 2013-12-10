@@ -6,6 +6,9 @@ if [ ! -f /etc/chef/ohai/hints/ec2.json ]; then
   echo '{}' > /etc/chef/ohai/hints/ec2.json
 fi
 
+/usr/bin/yum install -y git
+/usr/bin/curl -L http://www.opscode.com/chef/install.sh | /bin/bash
+
 INSTANCEID=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id`
 AZ=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone/`
 SERVERNAME=$INSTANCEID
@@ -70,3 +73,5 @@ if [ ! -d /usr/share/phpMyAdmin/${PHP_MY_ADMIN} ]; then
 fi
 
 /bin/rm -rf /tmp/amimoto
+
+/usr/bin/curl -L http://clear.megumi-cloud.com | /bin/bash

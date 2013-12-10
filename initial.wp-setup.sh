@@ -17,9 +17,10 @@ INSTANCEID=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id
 AZ=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone/`
 SERVERNAME=$INSTANCEID
 
-/sbin/service mysql stop
+/bin/cp /dev/null /root/.mysql_history > /dev/null 2>&1
 /bin/cp /dev/null /root/.bash_history > /dev/null 2>&1; history -c
 /bin/cp /dev/null /home/ec2-user/.bash_history > /dev/null 2>&1
+/bin/rm -rf /var/www/vhosts/i-* > /dev/null 2>&1
 /usr/bin/yes | /usr/bin/crontab -r
 
 if [ ! -d /var/www/vhosts/${INSTANCEID} ]; then
@@ -48,10 +49,10 @@ if [ "$CF_PATTERN" = "nfs_server" ]; then
   /usr/bin/chef-solo -o amimoto::nfs_dispatcher -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
 fi
 if [ "$CF_PATTERN" = "nfs_client" ]; then
-  /usr/bin/chef-solo -o amimoto::nfs_dispatcher -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
   if [ -d /var/www/vhosts/${INSTANCEID} ]; then
-    /binrm -rf /var/www/vhosts/${INSTANCEID}
+    /bin/rm -rf /var/www/vhosts/${INSTANCEID}
   fi
+  /usr/bin/chef-solo -o amimoto::nfs_dispatcher -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
 fi
 /bin/rm -rf /tmp/chef-repo/
 
