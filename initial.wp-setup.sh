@@ -23,6 +23,19 @@ SERVERNAME=$INSTANCEID
 /bin/rm -rf /var/www/vhosts/i-* > /dev/null 2>&1
 /usr/bin/yes | /usr/bin/crontab -r
 
+if [ -f /etc/php-fpm.d/www.conf ]; then
+  /bin/rm -f /etc/php-fpm.d/www.conf
+fi
+if [ -f /etc/nginx/nginx.conf ]; then
+  /bin/rm -f /etc/nginx/nginx.conf
+fi
+if [ -f /etc/nginx/conf.d/default.conf ]; then
+  /bin/rm -f /etc/nginx/conf.d/default.conf
+fi
+if [ -f /etc/nginx/conf.d/default.backend.conf ]; then
+  /bin/rm -f /etc/nginx/conf.d/default.backend.conf
+fi
+
 if [ ! -d /var/www/vhosts/${INSTANCEID} ]; then
   /bin/mkdir -p /var/www/vhosts/${INSTANCEID}
 fi
