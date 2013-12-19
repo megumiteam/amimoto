@@ -162,7 +162,7 @@ fi
 
 PHP_MY_ADMIN_VER="4.0.9"
 PHP_MY_ADMIN="phpMyAdmin-${PHP_MY_ADMIN_VER}-all-languages"
-if [ ! -d /usr/share/phpMyAdmin/${PHP_MY_ADMIN} ]; then
+if [ ! -d /usr/share/${PHP_MY_ADMIN} ]; then
   cd /usr/share/
   /usr/bin/wget http://sourceforge.net/projects/phpmyadmin/files/phpMyAdmin/${PHP_MY_ADMIN_VER}/${PHP_MY_ADMIN}.zip
   /usr/bin/unzip /usr/share/${PHP_MY_ADMIN}.zip
