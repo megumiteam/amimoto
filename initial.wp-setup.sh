@@ -124,6 +124,12 @@ fi
 /bin/rm /var/log/mysqld.log*
 /sbin/service mysql start
 
+WP_CLI=/usr/bin/wp
+if [ ! -f $WP_CLI ]; then
+   /usr/bin/curl -L https://raw.github.com/wp-cli/wp-cli.github.com/master/installer.sh | /bin/bash
+   WP_CLI=$HOME/.wp-cli/bin/wp
+fi
+
 if [ "$CF_PATTERN" != "nfs_client" ]; then
   echo "WordPress install ..."
   if [ ! -d /var/www/vhosts/$SERVERNAME ]; then
@@ -131,9 +137,9 @@ if [ "$CF_PATTERN" != "nfs_client" ]; then
   fi
   cd /var/www/vhosts/$SERVERNAME
   if [ "$REGION" = "ap-northeast-1" ]; then
-    /usr/bin/wp core download --locale=ja
+    $WP_CLI core download --locale=ja
   else
-    /usr/bin/wp core download
+    $WP_CLI core download
   fi
   if [ -f /tmp/amimoto/wp-setup.php ]; then
     /usr/bin/php /tmp/amimoto/wp-setup.php $SERVERNAME $INSTANCEID $PUBLICNAME
