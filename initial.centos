@@ -1,0 +1,17 @@
+#!/bin/sh
+/bin/cp /dev/null /root/.mysql_history > /dev/null 2>&1
+/bin/cp /dev/null /root/.bash_history > /dev/null 2>&1; history -c
+/usr/bin/yes | /usr/bin/crontab -r
+
+echo "start..."
+echo ""
+
+cd /tmp/
+/usr/bin/git clone git://github.com/megumiteam/amimoto.git
+if [ -f /tmp/amimoto/centos/wp-setup.sh ]; then
+  /bin/sh /tmp/amimoto/centos/wp-setup.sh default
+fi
+/bin/rm -Rf /tmp/amimoto
+
+echo ""
+echo "...done"
