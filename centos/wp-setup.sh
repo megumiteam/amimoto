@@ -53,7 +53,9 @@ if [ ! -f $WP_CLI ]; then
    /usr/bin/curl -L https://raw.github.com/wp-cli/wp-cli.github.com/master/installer.sh | /bin/bash
    WP_CLI=$HOME/.wp-cli/bin/wp
 fi
-mkdir /var/www/vhosts/$SERVERNAME
+if [ ! -d /var/www/vhosts/$SERVERNAME ]; then
+    mkdir -p /var/www/vhosts/$SERVERNAME
+fi
 cd /var/www/vhosts/$SERVERNAME
 $WP_CLI core download --locale=ja
 plugin_install "nginx-champuru.zip" "$SERVERNAME" > /dev/null 2>&1
