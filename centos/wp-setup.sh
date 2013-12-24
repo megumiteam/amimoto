@@ -45,12 +45,17 @@ if [ "$SERVERNAME" = "$INSTANCEID" ]; then
 fi
 
 echo "WordPress install ..."
-if [ ! -f $HOME/.wp-cli/bin/wp ]; then
-  /usr/bin/curl https://raw.github.com/wp-cli/wp-cli.github.com/master/installer.sh | /bin/bash
+WP_CLI=/usr/bin/wp
+if [ ! -f $WP_CLI ]; then
+   WP_CLI=/usr/local/bin/wp
+fi
+if [ ! -f $WP_CLI ]; then
+   /usr/bin/curl -L https://raw.github.com/wp-cli/wp-cli.github.com/master/installer.sh | /bin/bash
+   WP_CLI=$HOME/.wp-cli/bin/wp
 fi
 mkdir /var/www/vhosts/$SERVERNAME
 cd /var/www/vhosts/$SERVERNAME
-$HOME/.wp-cli/bin/wp core download --locale=ja
+$WP_CLI core download --locale=ja
 plugin_install "nginx-champuru.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wpbooster-cdn-client.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wp-remote-manager-client.zip" "$SERVERNAME" > /dev/null 2>&1
@@ -78,3 +83,13 @@ fi
 /bin/chown -R nginx:nginx /var/tmp/php
 /bin/chown -R nginx:nginx /var/lib/php
 /bin/chown -R nginx:nginx /var/www/vhosts/$SERVERNAME
+
+PHP_MY_ADMIN_VER="4.0.9"
+PHP_MY_ADMIN="phpMyAdmin-${PHP_MY_ADMIN_VER}-all-languages"
+if [ ! -d /usr/share/${PHP_MY_ADMIN} ]; then
+  cd /usr/share/
+  /usr/bin/wget http://sourceforge.net/projects/phpmyadmin/files/phpMyAdmin/${PHP_MY_ADMIN_VER}/${PHP_MY_ADMIN}.zip
+  /usr/bin/unzip /usr/share/${PHP_MY_ADMIN}.zip
+  /bin/rm /usr/share/${PHP_MY_ADMIN}.zip
+  /bin/ln -s /usr/share/${PHP_MY_ADMIN} /usr/share/phpMyAdmin
+fi
