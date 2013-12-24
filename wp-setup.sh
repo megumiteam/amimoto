@@ -6,6 +6,8 @@ function plugin_install(){
   /bin/rm /tmp/$1
 }
 
+WP_VER=3.8
+
 SERVERNAME=$1
 INSTANCEID=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id`
 #PUBLICNAME=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/public-hostname`
@@ -147,15 +149,22 @@ if [ "$SERVERNAME" = "$INSTANCEID" ]; then
 fi
 
 echo "WordPress install ..."
-if [ ! -f $HOME/.wp-cli/bin/wp ]; then
-  /usr/bin/curl https://raw.github.com/wp-cli/wp-cli.github.com/master/installer.sh | /bin/bash
+WP_CLI=/usr/bin/wp
+if [ ! -f $WP_CLI ]; then
+  WP_CLI=/usr/local/bin/wp
 fi
-mkdir /var/www/vhosts/$SERVERNAME
+if [ ! -f $WP_CLI ]; then
+  /usr/bin/curl -L https://raw.github.com/wp-cli/wp-cli.github.com/master/installer.sh | /bin/bash
+  WP_CLI=$HOME/.wp-cli/bin/wp
+fi
+if [ ! -d /var/www/vhosts/$SERVERNAME ]; then
+  mkdir -p /var/www/vhosts/$SERVERNAME
+fi
 cd /var/www/vhosts/$SERVERNAME
 if [ "$REGION" = "ap-northeast-1" ]; then
-  $HOME/.wp-cli/bin/wp core download --locale=ja
+  $WP_CLI core download --locale=ja --version=$WP_VER
 else
-  $HOME/.wp-cli/bin/wp core download
+  $WP_CLI core download --version=$WP_VER
 fi
 if [ -f /tmp/amimoto/wp-setup.php ]; then
   /usr/bin/php /tmp/amimoto/wp-setup.php $SERVERNAME $INSTANCEID $PUBLICNAME

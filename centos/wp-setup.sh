@@ -6,6 +6,8 @@ function plugin_install(){
   /bin/rm /tmp/$1
 }
 
+WP_VER=3.8
+
 SERVERNAME=$1
 INSTANCEID=default
 TZ="Asia\/Tokyo"
@@ -47,17 +49,17 @@ fi
 echo "WordPress install ..."
 WP_CLI=/usr/bin/wp
 if [ ! -f $WP_CLI ]; then
-   WP_CLI=/usr/local/bin/wp
+  WP_CLI=/usr/local/bin/wp
 fi
 if [ ! -f $WP_CLI ]; then
-   /usr/bin/curl -L https://raw.github.com/wp-cli/wp-cli.github.com/master/installer.sh | /bin/bash
-   WP_CLI=$HOME/.wp-cli/bin/wp
+  /usr/bin/curl -L https://raw.github.com/wp-cli/wp-cli.github.com/master/installer.sh | /bin/bash
+  WP_CLI=$HOME/.wp-cli/bin/wp
 fi
 if [ ! -d /var/www/vhosts/$SERVERNAME ]; then
-    mkdir -p /var/www/vhosts/$SERVERNAME
+  mkdir -p /var/www/vhosts/$SERVERNAME
 fi
 cd /var/www/vhosts/$SERVERNAME
-$WP_CLI core download --locale=ja
+$WP_CLI core download --locale=ja --version=$WP_VER
 plugin_install "nginx-champuru.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wpbooster-cdn-client.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wp-remote-manager-client.zip" "$SERVERNAME" > /dev/null 2>&1

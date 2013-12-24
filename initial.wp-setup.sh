@@ -13,6 +13,8 @@ if [ ! -f /etc/chef/ohai/hints/ec2.json ]; then
   echo '{}' > /etc/chef/ohai/hints/ec2.json
 fi
 
+WP_VER=3.8
+
 INSTANCEID=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id`
 AZ=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone/`
 SERVERNAME=$INSTANCEID
@@ -126,6 +128,9 @@ fi
 
 WP_CLI=/usr/bin/wp
 if [ ! -f $WP_CLI ]; then
+   WP_CLI=/usr/local/bin/wp
+fi
+if [ ! -f $WP_CLI ]; then
    /usr/bin/curl -L https://raw.github.com/wp-cli/wp-cli.github.com/master/installer.sh | /bin/bash
    WP_CLI=$HOME/.wp-cli/bin/wp
 fi
@@ -137,9 +142,9 @@ if [ "$CF_PATTERN" != "nfs_client" ]; then
   fi
   cd /var/www/vhosts/$SERVERNAME
   if [ "$REGION" = "ap-northeast-1" ]; then
-    $WP_CLI core download --locale=ja
+    $WP_CLI core download --locale=ja --version=$WP_VER
   else
-    $WP_CLI core download
+    $WP_CLI core download --version=$WP_VER
   fi
   if [ -f /tmp/amimoto/wp-setup.php ]; then
     /usr/bin/php /tmp/amimoto/wp-setup.php $SERVERNAME $INSTANCEID $PUBLICNAME
