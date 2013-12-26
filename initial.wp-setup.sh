@@ -72,9 +72,6 @@ if [ "$CF_PATTERN" = "nfs_server" ]; then
   /usr/bin/chef-solo -o amimoto::nfs_dispatcher -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
 fi
 if [ "$CF_PATTERN" = "nfs_client" ]; then
-  if [ -d /var/www/vhosts/${INSTANCEID} ]; then
-    /bin/rm -rf /var/www/vhosts/${INSTANCEID}
-  fi
   /usr/bin/chef-solo -o amimoto::nfs_dispatcher -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
 fi
 /bin/rm -rf /tmp/chef-repo/
