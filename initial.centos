@@ -4,6 +4,19 @@ if [ ! -f /etc/monit.d/logging ]; then
   /sbin/service monit restart
 fi
 
+if [ ! -f /etc/logrotate.d/monit ]; then 
+echo '/var/log/monit {
+    missingok
+    notifempty
+    size 100k
+    create 0644 root root
+    postrotate
+        /sbin/service monit condrestart > /dev/null 2>&1 || :
+    endscript
+
+}' > /etc/logrotate.d/monit
+fi
+
 /bin/cp /dev/null /root/.mysql_history > /dev/null 2>&1
 /bin/cp /dev/null /root/.bash_history > /dev/null 2>&1; history -c
 /usr/bin/yes | /usr/bin/crontab -r
