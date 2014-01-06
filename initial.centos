@@ -1,4 +1,8 @@
 #!/bin/sh
+if [ ! -f /etc/monit.d/logging ]; then
+  echo 'set logfile /var/log/monit' > /etc/monit.d/logging
+fi
+
 /bin/cp /dev/null /root/.mysql_history > /dev/null 2>&1
 /bin/cp /dev/null /root/.bash_history > /dev/null 2>&1; history -c
 /usr/bin/yes | /usr/bin/crontab -r
