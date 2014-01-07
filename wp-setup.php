@@ -1,5 +1,7 @@
 <?php
-$cloud_formation_json = '/opt/aws/cloud_formation.json';
+$cloud_formation_json   = '/opt/aws/cloud_formation.json';
+$nginx_proxy_cache_path = '/var/cache/nginx/proxy_cache';
+
 $mysql_db = $mysql_user = $mysql_pwd = $public_name = $instance_id = $site_name = "";
 switch($argc) {
     case 1:
@@ -159,7 +161,18 @@ if ( !empty( \$_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
  * For Nginx Cache Controller
  */
 define('IS_AMIMOTO', true);
-define('NCC_CACHE_DIR', '/var/cache/nginx/proxy_cache');
+define('NCC_CACHE_DIR', '$nginx_proxy_cache_path');
+
+/**
+ * set post revisions
+ */
+//define('WP_POST_REVISIONS', 5);
+
+/**
+ * disallow file edit and modifie
+ */
+//define('DISALLOW_FILE_MODS',true);
+//define('DISALLOW_FILE_EDIT',true);
 
 /* That's all, stop editing! Happy blogging. */
 
