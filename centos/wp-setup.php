@@ -1,5 +1,4 @@
 <?php
-$cloud_formation_json = '/opt/aws/cloud_formation.json';
 $mysql_db = $mysql_user = $mysql_pwd = $public_name = $instance_id = $site_name = "";
 switch($argc) {
     case 1:
@@ -46,42 +45,23 @@ $wp_cfg = <<<EOT
  */
 
 // ** MySQL settings - You can get this info from your web host ** //
-\$db_data = false;
-if ( file_exists('$cloud_formation_json') ) {
-	\$db_data = json_decode(file_get_contents('$cloud_formation_json'), true);
-	if ( isset(\$db_data['rds']) ) {
-		\$db_data = \$db_data['rds'];
-		\$db_data['host'] = \$db_data['endpoint'] . ':' . \$db_data['port'];
-	}
-}
-if ( !\$db_data ) {
-	\$db_data = array(
-		'database' => '%DB_NAME%',
-		'username' => '%DB_USER%',
-		'password' => '%DB_PASSWORD%',
-		'host'     => '%DB_HOST%',
-	);
-}
-
 /** The name of the database for WordPress */
-define('DB_NAME', \$db_data['database']);
+define('DB_NAME', '%DB_NAME%');
 
 /** MySQL database username */
-define('DB_USER', \$db_data['username']);
+define('DB_USER', '%DB_USER%');
 
 /** MySQL database password */
-define('DB_PASSWORD', \$db_data['password']);
+define('DB_PASSWORD', '%DB_PASSWORD%');
 
 /** MySQL hostname */
-define('DB_HOST', \$db_data['host']);
+define('DB_HOST', '%DB_HOST%');
 
 /** Database Charset to use in creating database tables. */
 define('DB_CHARSET', 'utf8');
 
 /** The Database Collate type. Don't change this if in doubt. */
 define('DB_COLLATE', '');
-
-unset(\$db_data);
 
 /**#@+
  * Authentication Unique Keys and Salts.

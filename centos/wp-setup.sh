@@ -69,8 +69,16 @@ plugin_install "flamingo.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "contact-form-7.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "jetpack.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "hotfix.zip" "$SERVERNAME" > /dev/null 2>&1
-if [ -f /tmp/amimoto/wp-setup.php ]; then
-  /usr/bin/php /tmp/amimoto/other/wp-setup.php $SERVERNAME $INSTANCEID
+
+MU_PLUGINS="/var/www/vhosts/${SERVERNAME}/wp-content/mu-plugins"
+if [ ! -d ${MU_PLUGINS} ]; then
+  /bin/mkdir -p ${MU_PLUGINS}
+fi
+cd $MU_PLUGINS
+/usr/bin/wget https://raw.github.com/megumiteam/amimoto/master/mu-plugins.php
+
+if [ -f /tmp/amimoto/centos/wp-setup.php ]; then
+  /usr/bin/php /tmp/amimoto/centos/wp-setup.php $SERVERNAME $INSTANCEID
 fi
 echo "... WordPress installed"
 
