@@ -10,11 +10,13 @@ License: GPLv2 or later
 */
 
 // http://dogmap.jp/2012/08/25/must-use-plugins/
-new just_do_it();
+add_action('init', function(){new just_do_it();});
 class just_do_it {
   private $must_plugins = array();
 
   function __construct() {
+    if (!is_user_logged_in())
+      return;
     if (defined('WPLANG') && WPLANG == 'ja')
       $this->must_plugins['WP Multibyte Patch'] = 'wp-multibyte-patch/wp-multibyte-patch.php';
     if (defined('IS_AMIMOTO') && IS_AMIMOTO)
