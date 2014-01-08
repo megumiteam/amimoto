@@ -180,6 +180,14 @@ plugin_install "contact-form-7.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "nephila-clavata.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "jetpack.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "hotfix.zip" "$SERVERNAME" > /dev/null 2>&1
+
+MU_PLUGINS="/var/www/vhosts/${SERVERNAME}/wp-content/mu-plugins"
+if [ ! -d ${MU_PLUGINS} ]; then
+  /bin/mkdir -p ${MU_PLUGINS}
+fi
+cd $MU_PLUGINS
+/usr/bin/wget https://raw.github.com/megumiteam/amimoto/master/mu-plugins.php
+
 echo "... WordPress installed"
 
 if [ ! -d /var/tmp/php ]; then
