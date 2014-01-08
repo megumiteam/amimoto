@@ -7,7 +7,7 @@ function plugin_install(){
 }
 
 if [ ! -d /etc/chef/ohai/hints ]; then
-  mkdir -p /etc/chef/ohai/hints
+  /bin/mkdir -p /etc/chef/ohai/hints
 fi
 if [ ! -f /etc/chef/ohai/hints/ec2.json ]; then
   echo '{}' > /etc/chef/ohai/hints/ec2.json
@@ -135,7 +135,7 @@ fi
 if [ "$CF_PATTERN" != "nfs_client" ]; then
   echo "WordPress install ..."
   if [ ! -d /var/www/vhosts/$SERVERNAME ]; then
-    mkdir /var/www/vhosts/$SERVERNAME
+    /bin/mkdir /var/www/vhosts/$SERVERNAME
   fi
   cd /var/www/vhosts/$SERVERNAME
   if [ "$REGION" = "ap-northeast-1" ]; then
@@ -157,6 +157,13 @@ if [ "$CF_PATTERN" != "nfs_client" ]; then
   plugin_install "jetpack.zip" "$SERVERNAME" > /dev/null 2>&1
   plugin_install "hotfix.zip" "$SERVERNAME" > /dev/null 2>&1
   echo "... WordPress installed"
+
+  MU_PLUGINS="/var/www/vhosts/${INSTANCEID}/wp-content/mu-plugins"
+  if [ ! -d ${MU_PLUGINS} ]; then
+    /bin/mkdir -p ${MU_PLUGINS}
+  fi
+  cd $MU_PLUGINS
+  /usr/bin/wget https://raw.github.com/megumiteam/amimoto/master/mu-plugins.php
 
   /bin/rm /var/www/vhosts/${INSTANCEID}/index.html
   /bin/chown -R nginx:nginx /var/cache/nginx
