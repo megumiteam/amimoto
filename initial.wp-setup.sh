@@ -162,8 +162,12 @@ if [ "$CF_PATTERN" != "nfs_client" ]; then
   if [ ! -d ${MU_PLUGINS} ]; then
     /bin/mkdir -p ${MU_PLUGINS}
   fi
-  cd $MU_PLUGINS
-  /usr/bin/wget https://raw.github.com/megumiteam/amimoto/master/mu-plugins.php
+  if [ -f /tmp/amimoto/mu-plugins.php ]; then
+    /bin/cp /tmp/amimoto/mu-plugins.php $MU_PLUGINS
+  else
+    cd $MU_PLUGINS
+    /usr/bin/wget https://raw.github.com/megumiteam/amimoto/master/mu-plugins.php
+  fi
 
   /bin/rm /var/www/vhosts/${INSTANCEID}/index.html
   /bin/chown -R nginx:nginx /var/cache/nginx

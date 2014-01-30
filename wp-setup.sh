@@ -6,7 +6,7 @@ function plugin_install(){
   /bin/rm /tmp/$1
 }
 
-WP_VER=3.8
+WP_VER=3.8.1
 
 SERVERNAME=$1
 INSTANCEID=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id`
@@ -185,8 +185,12 @@ MU_PLUGINS="/var/www/vhosts/${SERVERNAME}/wp-content/mu-plugins"
 if [ ! -d ${MU_PLUGINS} ]; then
   /bin/mkdir -p ${MU_PLUGINS}
 fi
-cd $MU_PLUGINS
-/usr/bin/wget https://raw.github.com/megumiteam/amimoto/master/mu-plugins.php
+if [ -f /tmp/amimoto/mu-plugins.php ]; then
+  /bin/cp /tmp/amimoto/mu-plugins.php $MU_PLUGINS
+else
+  cd $MU_PLUGINS
+  /usr/bin/wget https://raw.github.com/megumiteam/amimoto/master/mu-plugins.php
+fi
 
 echo "... WordPress installed"
 
