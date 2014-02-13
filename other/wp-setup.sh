@@ -59,7 +59,7 @@ if [ ! -f $HOME/.wp-cli/bin/wp ]; then
 fi
 mkdir /var/www/vhosts/$SERVERNAME
 cd /var/www/vhosts/$SERVERNAME
-$HOME/.wp-cli/bin/wp core download --locale=ja
+$HOME/.wp-cli/bin/wp core download --locale=ja --allow-root
 plugin_install "nginx-champuru.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wpbooster-cdn-client.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wp-remote-manager-client.zip" "$SERVERNAME" > /dev/null 2>&1

@@ -162,9 +162,9 @@ if [ ! -d /var/www/vhosts/$SERVERNAME ]; then
 fi
 cd /var/www/vhosts/$SERVERNAME
 if [ "$REGION" = "ap-northeast-1" ]; then
-  $WP_CLI core download --locale=ja --version=$WP_VER
+  $WP_CLI core download --locale=ja --version=$WP_VER --allow-root
 else
-  $WP_CLI core download --version=$WP_VER
+  $WP_CLI core download --version=$WP_VER --allow-root
 fi
 if [ -f /tmp/amimoto/wp-setup.php ]; then
   /usr/bin/php /tmp/amimoto/wp-setup.php $SERVERNAME $INSTANCEID $PUBLICNAME
