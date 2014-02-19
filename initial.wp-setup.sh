@@ -61,12 +61,6 @@ echo '{ "run_list" : [ "recipe[amimoto]" ] }' > /tmp/chef-repo/amimoto.json
 echo 'file_cache_path "/tmp/chef-solo"
 cookbook_path ["/tmp/chef-repo/cookbooks"]' > /tmp/chef-repo/solo.rb
 /usr/bin/chef-solo -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
-if [ ! -f /etc/nginx/nginx.conf ]; then
-  /usr/bin/chef-solo -o amimoto::nginx -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
-fi
-if [ ! -f /etc/php-fpm.d/www.conf ]; then
-  /usr/bin/chef-solo -o amimoto::php -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
-fi
 CF_PATTERN=`/usr/bin/curl -s https://raw.github.com/megumiteam/amimoto/master/cf_patern_check.php | /usr/bin/php`
 if [ "$CF_PATTERN" = "nfs_server" ]; then
   /usr/bin/chef-solo -o amimoto::nfs_dispatcher -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
@@ -109,6 +103,8 @@ else
   /bin/cat /tmp/amimoto/etc/motd.en >> /etc/motd
 fi
 
+/sbin/service monit stop
+
 /sbin/service nginx stop
 /bin/rm -Rf /var/log/nginx/*
 /bin/rm -Rf /var/cache/nginx/*
@@ -122,6 +118,8 @@ fi
 /bin/rm /var/lib/mysql/ib_logfile*
 /bin/rm /var/log/mysqld.log*
 /sbin/service mysql start
+
+/sbin/service monit start
 
 WP_CLI=/usr/bin/wp
 if [ ! -f $WP_CLI ]; then
