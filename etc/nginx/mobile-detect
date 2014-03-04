@@ -5,7 +5,7 @@ if ($http_user_agent ~* '(DoCoMo|J-PHONE|Vodafone|MOT-|UP\.Browser|DDIPOCKET|AST
 if ($http_user_agent ~* '(iPhone|iPod|incognito|webmate|Android|dream|CUPCAKE|froyo|BlackBerry|webOS|s8000|bada|IEMobile|Googlebot\-Mobile|AdsBot\-Google)') {
     set $mobile "@smartphone";
 }
-if ($http_cookie ~* "wptouch(_switch_(cookie|toggle)=normal|-pro-view=desktop)") {
+if ($http_cookie ~* "wptouch[^\=]+\=(normal|desktop)") {
     set $mobile_off "${mobile}.off";
 }
 if ($mobile_off = "@smartphone.off") {
