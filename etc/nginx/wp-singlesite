@@ -23,7 +23,6 @@ include /etc/nginx/drop;
 
 # This order might seem weird - this is attempted to match last if rules below fail.
 location / {
-    include /etc/nginx/expires;
     try_files $uri $uri/ /index.php?$args;
 }
 
