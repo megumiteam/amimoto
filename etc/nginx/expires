@@ -6,10 +6,10 @@ if ( $request_filename ~ .*\.(txt|css|js)$ ) {
     access_log  off;
     expires 7d;
 }
-if ( $request_filename ~ .*\.(xml|gz)$ ) {
-    access_log  off;
-    expires 1d;
-}
+#if ( $request_filename ~ .*\.(xml|gz)$ ) {
+#    access_log  off;
+#    expires 1d;
+#}
 #if ( -f $request_filename ) {
 #    access_log  off;
 #    expires 30d;
