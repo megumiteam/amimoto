@@ -17,6 +17,8 @@ echo '/var/log/monit {
 }' > /etc/logrotate.d/monit
 fi
 
+yum update -y openssl
+
 /bin/cp /dev/null /root/.mysql_history > /dev/null 2>&1
 /bin/cp /dev/null /root/.bash_history > /dev/null 2>&1; history -c
 /usr/bin/yes | /usr/bin/crontab -r
@@ -33,3 +35,5 @@ fi
 
 echo ""
 echo "...done"
+
+reboot
