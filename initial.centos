@@ -28,30 +28,6 @@ fi
 
 yum update -y openssl
 
-echo '*filter
-:INPUT   ACCEPT [0:0]
-:FORWARD ACCEPT [0:0]
-:OUTPUT  ACCEPT [0:0]
-:RH-Firewall-1-INPUT - [0:0]
--A INPUT -j RH-Firewall-1-INPUT
--A FORWARD -j RH-Firewall-1-INPUT
--A RH-Firewall-1-INPUT -i lo -j ACCEPT
--A RH-Firewall-1-INPUT -p icmp --icmp-type any -j ACCEPT
--A RH-Firewall-1-INPUT -p 50 -j ACCEPT
--A RH-Firewall-1-INPUT -p 51 -j ACCEPT
--A RH-Firewall-1-INPUT -p udp --dport 5353 -d 224.0.0.251 -j ACCEPT
--A RH-Firewall-1-INPUT -p udp -m udp --dport 631 -j ACCEPT
--A RH-Firewall-1-INPUT -p tcp -m tcp --dport 631 -j ACCEPT
--A RH-Firewall-1-INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
-# HTTP, HTTPS, SSH
--A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 80    -j ACCEPT
--A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 443   -j ACCEPT
--A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 22    -j ACCEPT
--A RH-Firewall-1-INPUT -j REJECT --reject-with icmp-host-prohibited
-COMMIT
-COMMIT' > /etc/sysconfig/iptables
-/sbin/chkconfig iptables on
-
 /bin/cp /dev/null /root/.mysql_history > /dev/null 2>&1
 /bin/cp /dev/null /root/.bash_history > /dev/null 2>&1; history -c
 /usr/bin/yes | /usr/bin/crontab -r
