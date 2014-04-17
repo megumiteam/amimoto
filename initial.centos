@@ -28,7 +28,6 @@ fi
 
 yum update -y openssl
 
-if [ ! -f /etc/sysconfig/iptables ]; then
 echo '*filter
 :INPUT   ACCEPT [0:0]
 :FORWARD ACCEPT [0:0]
@@ -49,9 +48,9 @@ echo '*filter
 -A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 443   -j ACCEPT
 -A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 22    -j ACCEPT
 -A RH-Firewall-1-INPUT -j REJECT --reject-with icmp-host-prohibited
+COMMIT
 COMMIT' > /etc/sysconfig/iptables
-fi
-chkconfig iptables on
+/sbin/chkconfig iptables on
 
 /bin/cp /dev/null /root/.mysql_history > /dev/null 2>&1
 /bin/cp /dev/null /root/.bash_history > /dev/null 2>&1; history -c
