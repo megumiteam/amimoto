@@ -13,7 +13,7 @@ if [ ! -f /etc/monit.d/logging ]; then
   /sbin/service monit restart
 fi
 
-if [ ! -f /etc/logrotate.d/monit ]; then 
+if [ ! -f /etc/logrotate.d/monit ]; then
 echo '/var/log/monit {
     missingok
     notifempty
@@ -27,6 +27,31 @@ echo '/var/log/monit {
 fi
 
 yum update -y openssl
+
+if [ ! -f /etc/sysconfig/iptables ]; then
+echo '*filter
+:INPUT   ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT  ACCEPT [0:0]
+:RH-Firewall-1-INPUT - [0:0]
+-A INPUT -j RH-Firewall-1-INPUT
+-A FORWARD -j RH-Firewall-1-INPUT
+-A RH-Firewall-1-INPUT -i lo -j ACCEPT
+-A RH-Firewall-1-INPUT -p icmp --icmp-type any -j ACCEPT
+-A RH-Firewall-1-INPUT -p 50 -j ACCEPT
+-A RH-Firewall-1-INPUT -p 51 -j ACCEPT
+-A RH-Firewall-1-INPUT -p udp --dport 5353 -d 224.0.0.251 -j ACCEPT
+-A RH-Firewall-1-INPUT -p udp -m udp --dport 631 -j ACCEPT
+-A RH-Firewall-1-INPUT -p tcp -m tcp --dport 631 -j ACCEPT
+-A RH-Firewall-1-INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+# HTTP, HTTPS, SSH
+-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 80    -j ACCEPT
+-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 443   -j ACCEPT
+-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 22    -j ACCEPT
+-A RH-Firewall-1-INPUT -j REJECT --reject-with icmp-host-prohibited
+COMMIT' > /etc/sysconfig/iptables
+fi
+chkconfig iptables on
 
 /bin/cp /dev/null /root/.mysql_history > /dev/null 2>&1
 /bin/cp /dev/null /root/.bash_history > /dev/null 2>&1; history -c
@@ -42,6 +67,7 @@ SERVERNAME=default
 TZ="Asia\/Tokyo"
 
 cd /tmp/
+/sbin/service monit stop
 
 /bin/cp -Rf /tmp/amimoto/etc/nginx/* /etc/nginx/
 sed -e "s/\$host\([;\.]\)/$SERVERNAME\1/" /tmp/amimoto/etc/nginx/conf.d/default.conf > /etc/nginx/conf.d/default.conf
@@ -49,7 +75,6 @@ sed -e "s/\$host\([;\.]\)/$SERVERNAME\1/" /tmp/amimoto/etc/nginx/conf.d/default.
 /sbin/service nginx stop
 /bin/rm -Rf /var/log/nginx/*
 /bin/rm -Rf /var/cache/nginx/*
-/sbin/service nginx start
 
 /sbin/service php-fpm stop
 sed -e "s/date\.timezone = \"UTC\"/date\.timezone = \"$TZ\"/" /tmp/amimoto/etc/php.ini > /etc/php.ini
@@ -57,13 +82,13 @@ sed -e "s/date\.timezone = \"UTC\"/date\.timezone = \"$TZ\"/" /tmp/amimoto/etc/p
 /bin/cp /tmp/amimoto/etc/php-fpm.conf /etc/
 /bin/cp -Rf /tmp/amimoto/etc/php-fpm.d/* /etc/php-fpm.d/
 /bin/rm -Rf /var/log/php-fpm/*
-/sbin/service php-fpm start
 
 /sbin/service mysql stop
 /bin/cp /tmp/amimoto/etc/my.cnf /etc/
 /bin/rm /var/lib/mysql/ib_logfile*
 /bin/rm /var/log/mysqld.log*
-/sbin/service mysql start
+
+/sbin/service monit start
 
 echo "WordPress install ..."
 WP_CLI=/usr/bin/wp
