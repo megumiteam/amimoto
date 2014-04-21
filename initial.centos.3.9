@@ -55,7 +55,7 @@ if [ ! -d /var/www/vhosts/$SERVERNAME ]; then
   mkdir -p /var/www/vhosts/$SERVERNAME
 fi
 cd /var/www/vhosts/$SERVERNAME
-$WP_CLI core download --locale=ja --version=$WP_VER
+$WP_CLI core download --locale=ja --version=$WP_VER --allow-root
 plugin_install "nginx-champuru.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wpbooster-cdn-client.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wp-remote-manager-client.zip" "$SERVERNAME" > /dev/null 2>&1
