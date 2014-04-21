@@ -2,7 +2,7 @@ if ( $request_filename ~ .*\.(jpe?g|gif|png|swf|wmv|flv|ico)$ ) {
     access_log  off;
     expires 365d;
 }
-if ( $request_filename ~ .*\.(txt|css|js)$ ) {
+if ( $request_filename ~ .*\.(css|js)$ ) {
     access_log  off;
     expires 7d;
 }
