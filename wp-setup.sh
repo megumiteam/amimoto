@@ -6,7 +6,7 @@ function plugin_install(){
   /bin/rm /tmp/$1
 }
 
-WP_VER=3.9
+WP_VER=3.9.1
 
 SERVERNAME=$1
 INSTANCEID=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id`
