@@ -68,7 +68,7 @@ if [ ! -f /etc/php-fpm.d/www.conf ]; then
   /usr/bin/chef-solo -o amimoto::php -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
 fi
 
-CF_PATTERN=`/usr/bin/curl -s https://raw.github.com/megumiteam/amimoto/master/cf_patern_check.php | /usr/bin/php`
+CF_PATTERN=`/usr/bin/curl -s https://raw.githubusercontent.com/megumiteam/amimoto/master/cf_patern_check.php | /usr/bin/php`
 if [ "$CF_PATTERN" = "nfs_server" ]; then
   /usr/bin/chef-solo -o amimoto::nfs_dispatcher -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
 fi
