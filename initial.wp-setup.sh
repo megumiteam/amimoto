@@ -184,7 +184,7 @@ fi
 /bin/chown -R nginx:nginx /var/tmp/php
 /bin/chown -R nginx:nginx /var/lib/php
 
-PHP_MY_ADMIN_VER="4.0.9"
+PHP_MY_ADMIN_VER="4.2.5"
 PHP_MY_ADMIN="phpMyAdmin-${PHP_MY_ADMIN_VER}-all-languages"
 if [ ! -d /usr/share/${PHP_MY_ADMIN} ]; then
   cd /usr/share/
