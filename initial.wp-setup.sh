@@ -183,6 +183,7 @@ fi
 /bin/chown -R nginx:nginx /var/log/php-fpm
 /bin/chown -R nginx:nginx /var/tmp/php
 /bin/chown -R nginx:nginx /var/lib/php
+/bin/chmod +x /usr/local/bin/wp-setup
 
 PHP_MY_ADMIN_VER="4.2.5"
 PHP_MY_ADMIN="phpMyAdmin-${PHP_MY_ADMIN_VER}-all-languages"
