@@ -3,11 +3,15 @@
         alias /usr/share/phpMyAdmin;
         index index.php;
         include /etc/nginx/expires;
-    }
-    location ~ ^/phpMyAdmin/.+\.php$ {
-        alias /usr/share/phpMyAdmin;
-        fastcgi_pass   phpfpm;
-        fastcgi_index  index.php;
-        fastcgi_param  SCRIPT_FILENAME /usr/share$fastcgi_script_name;
-        include        fastcgi_params;
+
+        location ~ ^/phpMyAdmin/.+\.php$ {
+            alias /usr/share/phpMyAdmin;
+            try_files $uri =404;
+
+            expires        off;
+            fastcgi_pass   phpfpm;
+            fastcgi_index  index.php;
+            fastcgi_param  SCRIPT_FILENAME /usr/share$fastcgi_script_name;
+            include        fastcgi_params;
+        }
     }
