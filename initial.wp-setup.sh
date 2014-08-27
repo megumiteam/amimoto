@@ -13,7 +13,7 @@ if [ ! -f /etc/chef/ohai/hints/ec2.json ]; then
   echo '{}' > /etc/chef/ohai/hints/ec2.json
 fi
 
-WP_VER=3.9.1
+WP_VER=3.9.2
 
 INSTANCEID=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id`
 AZ=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone/`
