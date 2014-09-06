@@ -1,0 +1,16 @@
+    try_files $uri =404;
+
+    expires        off;
+    fastcgi_split_path_info ^(.+\.php)(/.+)$;
+    fastcgi_pass   phpfpm;
+    fastcgi_index  index.php;
+    fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+    include        fastcgi_params;
+    fastcgi_intercept_errors on;
+    fastcgi_connect_timeout 60;
+    fastcgi_send_timeout 180;
+    fastcgi_read_timeout 180;
+    fastcgi_buffers 16 16k;
+    fastcgi_buffer_size 32k;
+    fastcgi_busy_buffers_size 32k;
+    fastcgi_temp_file_write_size 256k;
