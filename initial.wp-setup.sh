@@ -19,6 +19,15 @@ INSTANCEID=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id
 AZ=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone/`
 SERVERNAME=$INSTANCEID
 
+echo '# Name: Percona RPM Repository
+# URL: http://www.percona.com/percona-lab.html
+[percona]
+name = CentOS $releasever - Percona
+baseurl=http://repo.percona.com/centos/$releasever/os/$basearch/
+enabled = 0
+gpgkey = file:///etc/pki/rpm-gpg/RPM-GPG-KEY-percona
+gpgcheck = 1' > /etc/yum.repos.d/Percona.repo
+
 /sbin/service mysql stop
 
 /bin/cp /dev/null /root/.mysql_history > /dev/null 2>&1
