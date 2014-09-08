@@ -6,7 +6,7 @@ function plugin_install(){
   /bin/rm /tmp/$1
 }
 
-WP_VER=3.8
+WP_VER=4.0
 
 SERVERNAME=$1
 INSTANCEID=default
@@ -47,13 +47,12 @@ if [ "$SERVERNAME" = "$INSTANCEID" ]; then
 fi
 
 echo "WordPress install ..."
-WP_CLI=/usr/bin/wp
+WP_CLI=/usr/local/bin/wp
 if [ ! -f $WP_CLI ]; then
-  WP_CLI=/usr/local/bin/wp
-fi
-if [ ! -f $WP_CLI ]; then
-  /usr/bin/curl -L https://raw.github.com/wp-cli/wp-cli.github.com/master/installer.sh | /bin/bash
-  WP_CLI=$HOME/.wp-cli/bin/wp
+  cd /usr/local/bin
+  /usr/bin/curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+  mv wp-cli.phar /usr/local/bin/wp
+  chmod +x /usr/local/bin/wp
 fi
 if [ ! -d /var/www/vhosts/$SERVERNAME ]; then
   mkdir -p /var/www/vhosts/$SERVERNAME
@@ -62,13 +61,11 @@ cd /var/www/vhosts/$SERVERNAME
 $WP_CLI core download --locale=ja --version=$WP_VER --allow-root
 plugin_install "nginx-champuru.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wpbooster-cdn-client.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "wp-remote-manager-client.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "head-cleaner.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wp-total-hacks.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "flamingo.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "contact-form-7.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "jetpack.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "hotfix.zip" "$SERVERNAME" > /dev/null 2>&1
 
 MU_PLUGINS="/var/www/vhosts/${SERVERNAME}/wp-content/mu-plugins"
 if [ ! -d ${MU_PLUGINS} ]; then

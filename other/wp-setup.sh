@@ -20,7 +20,7 @@ if [ "$SERVERNAME" = "$INSTANCEID" ]; then
   /bin/cat /tmp/amimoto/etc/motd.en >> /etc/motd
   /bin/cp /tmp/amimoto/etc/sysconfig/i18n.jp /etc/sysconfig/i18n
 fi
-  
+
 if [ "$SERVERNAME" = "$INSTANCEID" ]; then
   /bin/cp -Rf /tmp/amimoto/etc/nginx/* /etc/nginx/
   sed -e "s/\$host\([;\.]\)/$INSTANCEID\1/" /tmp/amimoto/etc/nginx/conf.d/default.conf > /etc/nginx/conf.d/default.conf
@@ -54,22 +54,24 @@ if [ "$SERVERNAME" = "$INSTANCEID" ]; then
 fi
 
 echo "WordPress install ..."
-if [ ! -f $HOME/.wp-cli/bin/wp ]; then
-  /usr/bin/curl https://raw.github.com/wp-cli/wp-cli.github.com/master/installer.sh | /bin/bash
+WP_CLI=/usr/local/bin/wp
+if [ ! -f $WP_CLI ]; then
+  cd /usr/local/bin
+  /usr/bin/curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+  mv wp-cli.phar /usr/local/bin/wp
+  chmod +x /usr/local/bin/wp
 fi
-mkdir /var/www/vhosts/$SERVERNAME
-cd /var/www/vhosts/$SERVERNAME
-$HOME/.wp-cli/bin/wp core download --locale=ja --allow-root
+if [ ! -d /var/www/vhosts/$SERVERNAME ]; then
+  mkdir -p /var/www/vhosts/$SERVERNAME
+fi
+$WP_CLI core download --locale=ja --allow-root
 plugin_install "nginx-champuru.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wpbooster-cdn-client.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "wp-remote-manager-client.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "head-cleaner.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wp-total-hacks.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "flamingo.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "contact-form-7.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "jetpack.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "hotfix.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "hello-claudia.zip" "$SERVERNAME" > /dev/null 2>&1
 if [ -f /tmp/amimoto/wp-setup.php ]; then
   /usr/bin/php /tmp/amimoto/other/wp-setup.php $SERVERNAME $INSTANCEID
 fi
