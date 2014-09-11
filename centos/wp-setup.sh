@@ -93,12 +93,15 @@ fi
 /bin/chown -R nginx:nginx /var/lib/php
 /bin/chown -R nginx:nginx /var/www/vhosts/$SERVERNAME
 
-PHP_MY_ADMIN_VER="4.0.9"
+PHP_MY_ADMIN_VER="4.1.13"
 PHP_MY_ADMIN="phpMyAdmin-${PHP_MY_ADMIN_VER}-all-languages"
 if [ ! -d /usr/share/${PHP_MY_ADMIN} ]; then
   cd /usr/share/
   /usr/bin/wget http://sourceforge.net/projects/phpmyadmin/files/phpMyAdmin/${PHP_MY_ADMIN_VER}/${PHP_MY_ADMIN}.zip
   /usr/bin/unzip /usr/share/${PHP_MY_ADMIN}.zip
   /bin/rm /usr/share/${PHP_MY_ADMIN}.zip
+  if [ -e /usr/share/phpMyAdmin ]; then
+    rm -r /usr/share/phpMyAdmin
+  fi
   /bin/ln -s /usr/share/${PHP_MY_ADMIN} /usr/share/phpMyAdmin
 fi

@@ -15,16 +15,16 @@ $mysql_pwd  = empty($mysql_pwd)  ? md5(mt_rand().date("YmdHisu"))    : $mysql_pw
 $mysql_host = 'localhost';
 
 // make user and database
-$link = @mysql_connect('localhost:3307', 'root', '');
-if ( $link ) {
-	if ( !mysql_select_db('mysql', $link) )
-	    die('MySQL select DB error!!: '.mysql_error());
-	if ( !mysql_query("create database {$mysql_db} default character set utf8 collate utf8_general_ci;") )
-	    die('MySQL create database error!!: '.mysql_error());
-	if ( !mysql_query("grant all privileges on {$mysql_db}.* to {$mysql_user}@localhost identified by '{$mysql_pwd}';") )
-	    die('MySQL create user error!!: '.mysql_error());
-	mysql_close($link);
+$mysqli = new mysqli("localhost", "root", "", "mysql");
+if ($mysqli->connect_errno) {
+    die("Failed to connect to MySQL: {$mysqli->connect_error}\n");
+} else {
+	$mysqli->set_charset("utf-8");
+	$mysqli->query("drop database if exists {$mysql_db};");
+        $mysqli->query("create database {$mysql_db} default character set utf8 collate utf8_general_ci;");
+        $mysqli->query("grant all privileges on {$mysql_db}.* to {$mysql_user}@localhost identified by '{$mysql_pwd}';");
 }
+$mysqli->close();
 
 // make wp-config.php
 $wp_cfg = <<<EOT
