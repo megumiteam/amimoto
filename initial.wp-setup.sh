@@ -227,4 +227,9 @@ if [ ! -d /usr/share/${PHP_MY_ADMIN} ]; then
   /bin/ln -s /usr/share/${PHP_MY_ADMIN} /usr/share/phpMyAdmin
 fi
 
+#install DSaaS Client
+/usr/bin/wget https://app.deepsecurity.trendmicro.com:443/software/agent/amzn1/x86_64/ -O /tmp/agent.rpm --no-check-certificate --quiet
+/bin/rpm -ihv /tmp/agent.rpm
+/bin/rm -rf /tmp/agent.rpm
+
 /bin/rm -rf /tmp/amimoto
