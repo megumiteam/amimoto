@@ -1,9 +1,16 @@
 #!/bin/sh
 function plugin_install(){
-  cd /tmp
-  /usr/bin/wget http://downloads.wordpress.org/plugin/$1
-  /usr/bin/unzip /tmp/$1 -d /var/www/vhosts/$2/wp-content/plugins/
-  /bin/rm /tmp/$1
+  if [ -f /tmp/${1}.zip ]; then
+    rm -r /tmp/${1}.zip
+  fi
+  /usr/bin/wget http://downloads.wordpress.org/plugin/${1}.zip
+
+  if [ -d /var/www/vhosts/${2}/wp-content/plugins/${1} ]; then
+    /bin/rm -rf /var/www/vhosts/${2}/wp-content/plugins/${1}
+  fi
+  /usr/bin/unzip /tmp/${1}.zip -d /var/www/vhosts/${2}/wp-content/plugins/
+
+  /bin/rm -r /tmp/${1}.zip
 }
 
 WP_VER=4.0
@@ -59,13 +66,30 @@ if [ ! -d /var/www/vhosts/$SERVERNAME ]; then
 fi
 cd /var/www/vhosts/$SERVERNAME
 $WP_CLI core download --locale=ja --version=$WP_VER --allow-root
-plugin_install "nginx-champuru.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "wpbooster-cdn-client.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "head-cleaner.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "wp-total-hacks.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "flamingo.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "contact-form-7.zip" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "jetpack.zip" "$SERVERNAME" > /dev/null 2>&1
+if [ -f /tmp/amimoto/centos/wp-setup.php ]; then
+  /usr/bin/php /tmp/amimoto/centos/wp-setup.php $SERVERNAME $INSTANCEID
+fi
+
+# Performance
+plugin_install "nginx-champuru" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "wpbooster-cdn-client" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "nephila-clavata" "$SERVERNAME" > /dev/null 2>&1
+
+# Developer
+plugin_install "debug-bar" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "debug-bar-extender" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "debug-bar-console" "$SERVERNAME" > /dev/null 2>&1
+
+#Security
+plugin_install "crazy-bone" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "login-lockdown" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "google-authenticator" "$SERVERNAME" > /dev/null 2>&1
+
+#Other
+plugin_install "nginx-mobile-theme" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "flamingo" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "contact-form-7" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "simple-ga-ranking" "$SERVERNAME" > /dev/null 2>&1
 
 MU_PLUGINS="/var/www/vhosts/${SERVERNAME}/wp-content/mu-plugins"
 if [ ! -d ${MU_PLUGINS} ]; then
@@ -74,9 +98,6 @@ fi
 cd $MU_PLUGINS
 /usr/bin/wget https://raw.github.com/megumiteam/amimoto/master/mu-plugins.php
 
-if [ -f /tmp/amimoto/centos/wp-setup.php ]; then
-  /usr/bin/php /tmp/amimoto/centos/wp-setup.php $SERVERNAME $INSTANCEID
-fi
 echo "... WordPress installed"
 
 if [ ! -d /var/tmp/php ]; then

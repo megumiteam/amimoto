@@ -1,9 +1,18 @@
 #!/bin/sh
 function plugin_install(){
   cd /tmp
-  /usr/bin/wget http://downloads.wordpress.org/plugin/$1
-  /usr/bin/unzip /tmp/$1 -d /var/www/vhosts/$2/wp-content/plugins/
-  /bin/rm /tmp/$1
+
+  if [ -f /tmp/${1}.zip ]; then
+    rm -r /tmp/${1}.zip
+  fi
+  /usr/bin/wget http://downloads.wordpress.org/plugin/${1}.zip
+
+  if [ -d /var/www/vhosts/${2}/wp-content/plugins/${1} ]; then
+    /bin/rm -rf /var/www/vhosts/${2}/wp-content/plugins/${1}
+  fi
+  /usr/bin/unzip /tmp/${1}.zip -d /var/www/vhosts/${2}/wp-content/plugins/
+
+  /bin/rm -r /tmp/${1}.zip
 }
 
 if [ ! -d /etc/chef/ohai/hints ]; then
@@ -142,8 +151,10 @@ if [ ! -f $WP_CLI ]; then
    WP_CLI=/usr/local/bin/wp
 fi
 if [ ! -f $WP_CLI ]; then
-   /usr/bin/curl -L https://raw.github.com/wp-cli/wp-cli.github.com/master/installer.sh | /bin/bash
-   WP_CLI=$HOME/.wp-cli/bin/wp
+  cd /usr/local/bin
+  /usr/bin/curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+  mv wp-cli.phar /usr/local/bin/wp
+  chmod +x /usr/local/bin/wp
 fi
 
 if [ "$CF_PATTERN" != "nfs_client" ]; then
@@ -153,23 +164,35 @@ if [ "$CF_PATTERN" != "nfs_client" ]; then
   fi
   cd /var/www/vhosts/$SERVERNAME
   if [ "$REGION" = "ap-northeast-1" ]; then
-    $WP_CLI core download --locale=ja --version=$WP_VER --allow-root
+    $WP_CLI core download --locale=ja --version=$WP_VER --allow-root --force
   else
-    $WP_CLI core download --version=$WP_VER --allow-root
+    $WP_CLI core download --version=$WP_VER --allow-root --force
   fi
   if [ -f /tmp/amimoto/wp-setup.php ]; then
     /usr/bin/php /tmp/amimoto/wp-setup.php $SERVERNAME $INSTANCEID $PUBLICNAME
   fi
-  plugin_install "nginx-champuru.zip" "$SERVERNAME" > /dev/null 2>&1
-  plugin_install "wpbooster-cdn-client.zip" "$SERVERNAME" > /dev/null 2>&1
-  plugin_install "wp-remote-manager-client.zip" "$SERVERNAME" > /dev/null 2>&1
-  plugin_install "head-cleaner.zip" "$SERVERNAME" > /dev/null 2>&1
-  plugin_install "wp-total-hacks.zip" "$SERVERNAME" > /dev/null 2>&1
-  plugin_install "flamingo.zip" "$SERVERNAME" > /dev/null 2>&1
-  plugin_install "contact-form-7.zip" "$SERVERNAME" > /dev/null 2>&1
-  plugin_install "nephila-clavata.zip" "$SERVERNAME" > /dev/null 2>&1
-  plugin_install "jetpack.zip" "$SERVERNAME" > /dev/null 2>&1
-  plugin_install "hotfix.zip" "$SERVERNAME" > /dev/null 2>&1
+
+  # Performance
+  plugin_install "nginx-champuru" "$SERVERNAME" > /dev/null 2>&1
+  plugin_install "wpbooster-cdn-client" "$SERVERNAME" > /dev/null 2>&1
+  plugin_install "nephila-clavata" "$SERVERNAME" > /dev/null 2>&1
+
+  # Developer
+  plugin_install "debug-bar" "$SERVERNAME" > /dev/null 2>&1
+  plugin_install "debug-bar-extender" "$SERVERNAME" > /dev/null 2>&1
+  plugin_install "debug-bar-console" "$SERVERNAME" > /dev/null 2>&1
+
+  #Security
+  plugin_install "crazy-bone" "$SERVERNAME" > /dev/null 2>&1
+  plugin_install "login-lockdown" "$SERVERNAME" > /dev/null 2>&1
+  plugin_install "google-authenticator" "$SERVERNAME" > /dev/null 2>&1
+
+  #Other
+  plugin_install "nginx-mobile-theme" "$SERVERNAME" > /dev/null 2>&1
+  plugin_install "flamingo" "$SERVERNAME" > /dev/null 2>&1
+  plugin_install "contact-form-7" "$SERVERNAME" > /dev/null 2>&1
+  plugin_install "simple-ga-ranking" "$SERVERNAME" > /dev/null 2>&1
+
   echo "... WordPress installed"
 
   MU_PLUGINS="/var/www/vhosts/${INSTANCEID}/wp-content/mu-plugins"
