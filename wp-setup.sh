@@ -1,5 +1,7 @@
 #!/bin/sh
 function plugin_install(){
+  cd /tmp
+
   if [ -f /tmp/${1}.zip ]; then
     rm -r /tmp/${1}.zip
   fi
