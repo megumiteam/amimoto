@@ -32,8 +32,8 @@ echo '# Name: Percona RPM Repository
 # URL: http://www.percona.com/percona-lab.html
 [percona]
 name = CentOS $releasever - Percona
-baseurl=http://repo.percona.com/centos/$releasever/os/$basearch/
-enabled = 0
+baseurl=http://repo.percona.com/centos/6Server/os/$basearch/
+enabled = 1
 gpgkey = file:///etc/pki/rpm-gpg/RPM-GPG-KEY-percona
 gpgcheck = 1' > /etc/yum.repos.d/Percona.repo
 
@@ -199,11 +199,8 @@ if [ "$CF_PATTERN" != "nfs_client" ]; then
   if [ ! -d ${MU_PLUGINS} ]; then
     /bin/mkdir -p ${MU_PLUGINS}
   fi
-  if [ -f /tmp/amimoto/mu-plugins.php ]; then
-    /bin/cp /tmp/amimoto/mu-plugins.php $MU_PLUGINS
-  else
-    cd $MU_PLUGINS
-    /usr/bin/wget https://raw.github.com/megumiteam/amimoto/master/mu-plugins.php
+  if [ -d /tmp/amimoto/mu-plugins ]; then
+    /bin/cp -rf /tmp/amimoto/mu-plugins/* $MU_PLUGINS
   fi
 
   /bin/rm /var/www/vhosts/${INSTANCEID}/index.html

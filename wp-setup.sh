@@ -206,11 +206,8 @@ MU_PLUGINS="/var/www/vhosts/${SERVERNAME}/wp-content/mu-plugins"
 if [ ! -d ${MU_PLUGINS} ]; then
   /bin/mkdir -p ${MU_PLUGINS}
 fi
-if [ -f /tmp/amimoto/mu-plugins.php ]; then
-  /bin/cp /tmp/amimoto/mu-plugins.php $MU_PLUGINS
-else
-  cd $MU_PLUGINS
-  /usr/bin/wget https://raw.github.com/megumiteam/amimoto/master/mu-plugins.php
+if [ -d /tmp/amimoto/mu-plugins ]; then
+  /bin/cp /tmp/amimoto/mu-plugins/mu-plugins.php $MU_PLUGINS
 fi
 
 echo "... WordPress installed"
