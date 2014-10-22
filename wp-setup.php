@@ -2,7 +2,7 @@
 $cloud_formation_json   = '/opt/aws/cloud_formation.json';
 $nginx_proxy_cache_path = '/var/cache/nginx/proxy_cache';
 
-function random_password($length = 8, $str_org = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&%$()-^=')
+function random_password($length = 8, $str_org = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ()-^=')
 {
     return substr(str_shuffle(str_repeat($str_org, $length)), 0, $length);
 }
