@@ -2,7 +2,7 @@
 $cloud_formation_json   = '/opt/aws/cloud_formation.json';
 $nginx_proxy_cache_path = '/var/cache/nginx/proxy_cache';
 
-function random_password($length = 8, $str_org = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ()-^=')
+function random_password($length = 8, $str_org = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ()-^=#$%&')
 {
     return substr(str_shuffle(str_repeat($str_org, $length)), 0, $length);
 }
@@ -18,7 +18,7 @@ switch($argc) {
         $site_name   = $argv[1];
 }
 $mysql_db   = $site_name !== 'default' ? str_replace(array('.','-'), '_', $site_name) : 'wordpress';
-$mysql_user = empty($mysql_user) ? 'wp_'.random_password(16,'0123456789abcdefghijklmn') : $mysql_user;
+$mysql_user = empty($mysql_user) ? 'wp_'.random_password(13,'0123456789abcdefghijklmn') : $mysql_user;
 $mysql_pwd  = empty($mysql_pwd)  ? random_password(32)    : $mysql_pwd;
 $mysql_host = 'localhost';
 
