@@ -1,5 +1,3 @@
-    try_files $uri =404;
-
     expires        off;
     fastcgi_split_path_info ^(.+\.php)(/.+)$;
     fastcgi_pass   phpfpm;
