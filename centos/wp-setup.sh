@@ -15,7 +15,7 @@ function plugin_install(){
   /bin/rm -r /tmp/${1}.zip
 }
 
-WP_VER=4.0
+WP_VER=4.1
 
 SERVERNAME=$1
 INSTANCEID=default
@@ -97,8 +97,7 @@ MU_PLUGINS="/var/www/vhosts/${SERVERNAME}/wp-content/mu-plugins"
 if [ ! -d ${MU_PLUGINS} ]; then
   /bin/mkdir -p ${MU_PLUGINS}
 fi
-cd $MU_PLUGINS
-/usr/bin/wget https://raw.github.com/megumiteam/amimoto/master/mu-plugins.php
+cp $SRC_DIR/mu-plugins/mu-plugins.php $MU_PLUGINS
 
 echo "... WordPress installed"
 
@@ -116,7 +115,7 @@ fi
 /bin/chown -R nginx:nginx /var/lib/php
 /bin/chown -R nginx:nginx /var/www/vhosts/$SERVERNAME
 
-PHP_MY_ADMIN_VER="4.1.13"
+PHP_MY_ADMIN_VER="4.3.3"
 PHP_MY_ADMIN="phpMyAdmin-${PHP_MY_ADMIN_VER}-all-languages"
 if [ ! -d /usr/share/${PHP_MY_ADMIN} ]; then
   cd /usr/share/
