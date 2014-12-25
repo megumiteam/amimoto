@@ -97,7 +97,7 @@ MU_PLUGINS="/var/www/vhosts/${SERVERNAME}/wp-content/mu-plugins"
 if [ ! -d ${MU_PLUGINS} ]; then
   /bin/mkdir -p ${MU_PLUGINS}
 fi
-cp $SRC_DIR/mu-plugins/mu-plugins.php $MU_PLUGINS
+cp /tmp/amimoto/mu-plugins/mu-plugins.php $MU_PLUGINS
 
 echo "... WordPress installed"
 
