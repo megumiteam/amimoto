@@ -163,7 +163,7 @@ fi
 if [ ! -f /opt/local/amimoto/wp-admin/install.php ]; then
   /bin/cp /tmp/amimoto/install.php /opt/local/amimoto/wp-admin
 fi
-bin/chown -R nginx:nginx /opt/local/amimoto
+/bin/chown -R nginx:nginx /opt/local/amimoto
 
 if [ "$CF_PATTERN" != "nfs_client" ]; then
   echo "WordPress install ..."
