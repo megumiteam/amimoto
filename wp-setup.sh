@@ -114,6 +114,7 @@ fi
 if [ ! -f /opt/local/amimoto/wp-admin/install.php ]; then
   /bin/cp /tmp/amimoto/install.php /opt/local/amimoto/wp-admin
 fi
+bin/chown -R nginx:nginx /opt/local/amimoto
 
 if [ "$SERVERNAME" = "$INSTANCEID" ]; then
   /bin/cp /dev/null /root/.bash_history > /dev/null 2>&1; history -c

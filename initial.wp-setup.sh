@@ -157,6 +157,14 @@ if [ ! -f $WP_CLI ]; then
   chmod +x /usr/local/bin/wp
 fi
 
+if [ ! -d /opt/local/amimoto/wp-admin ]; then
+  /bin/mkdir -p /opt/local/amimoto/wp-admin
+fi
+if [ ! -f /opt/local/amimoto/wp-admin/install.php ]; then
+  /bin/cp /tmp/amimoto/install.php /opt/local/amimoto/wp-admin
+fi
+bin/chown -R nginx:nginx /opt/local/amimoto
+
 if [ "$CF_PATTERN" != "nfs_client" ]; then
   echo "WordPress install ..."
   if [ ! -d /var/www/vhosts/$SERVERNAME ]; then
