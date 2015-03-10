@@ -24,6 +24,7 @@ fi
 
 WP_VER=4.1
 
+INSTANCETYPE=`/usr/bin/curl -s curl http://169.254.169.254/latest/meta-data/instance-type`
 INSTANCEID=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id`
 AZ=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone/`
 SERVERNAME=$INSTANCEID
@@ -45,19 +46,6 @@ gpgcheck = 1' > /etc/yum.repos.d/Percona.repo
 /bin/rm -rf /var/www/vhosts/i-* > /dev/null 2>&1
 /usr/bin/yes | /usr/bin/crontab -r
 
-if [ -f /etc/php-fpm.d/www.conf ]; then
-  /bin/rm -f /etc/php-fpm.d/www.conf
-fi
-if [ -f /etc/nginx/nginx.conf ]; then
-  /bin/rm -f /etc/nginx/nginx.conf
-fi
-if [ -f /etc/nginx/conf.d/default.conf ]; then
-  /bin/rm -f /etc/nginx/conf.d/default.conf
-fi
-if [ -f /etc/nginx/conf.d/default.backend.conf ]; then
-  /bin/rm -f /etc/nginx/conf.d/default.backend.conf
-fi
-
 if [ ! -d /var/www/vhosts/${INSTANCEID} ]; then
   /bin/mkdir -p /var/www/vhosts/${INSTANCEID}
 fi
@@ -65,35 +53,50 @@ echo '<html>
 <head>
 <title>Setting up your WordPress now.</title>
 </head>
- <body>
+<body>
 <p>Setting up your WordPress now.</p>
 <p>After a while please reload your web browser.</p>
 </body>' > /var/www/vhosts/${INSTANCEID}/index.html
 
-cd /tmp
-/usr/bin/git clone git://github.com/opscode/chef-repo.git
-cd /tmp/chef-repo/cookbooks
-/usr/bin/git clone git://github.com/megumiteam/chef-amimoto.git amimoto
-cd /tmp/chef-repo/
-echo '{ "run_list" : [ "recipe[amimoto]" ] }' > /tmp/chef-repo/amimoto.json
-echo 'file_cache_path "/tmp/chef-solo"
-cookbook_path ["/tmp/chef-repo/cookbooks"]' > /tmp/chef-repo/solo.rb
-/usr/bin/chef-solo -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
-if [ ! -f /etc/nginx/nginx.conf ]; then
-  /usr/bin/chef-solo -o amimoto::nginx -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
-fi
-if [ ! -f /etc/php-fpm.d/www.conf ]; then
-  /usr/bin/chef-solo -o amimoto::php -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
-fi
+if [ "t1.micro" != "${INSTANCETYPE}" ]; then
+  if [ -f /etc/php-fpm.d/www.conf ]; then
+    /bin/rm -f /etc/php-fpm.d/www.conf
+  fi
+  if [ -f /etc/nginx/nginx.conf ]; then
+    /bin/rm -f /etc/nginx/nginx.conf
+  fi
+  if [ -f /etc/nginx/conf.d/default.conf ]; then
+    /bin/rm -f /etc/nginx/conf.d/default.conf
+  fi
+  if [ -f /etc/nginx/conf.d/default.backend.conf ]; then
+    /bin/rm -f /etc/nginx/conf.d/default.backend.conf
+  fi
 
-CF_PATTERN=`/usr/bin/curl -s https://raw.githubusercontent.com/megumiteam/amimoto/master/cf_patern_check.php | /usr/bin/php`
-if [ "$CF_PATTERN" = "nfs_server" ]; then
-  /usr/bin/chef-solo -o amimoto::nfs_dispatcher -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
+  cd /tmp
+  /usr/bin/git clone git://github.com/opscode/chef-repo.git
+  cd /tmp/chef-repo/cookbooks
+  /usr/bin/git clone git://github.com/megumiteam/chef-amimoto.git amimoto
+  cd /tmp/chef-repo/
+  echo '{ "run_list" : [ "recipe[amimoto]" ] }' > /tmp/chef-repo/amimoto.json
+  echo 'file_cache_path "/tmp/chef-solo"
+cookbook_path ["/tmp/chef-repo/cookbooks"]' > /tmp/chef-repo/solo.rb
+  /usr/bin/chef-solo -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
+  if [ ! -f /etc/nginx/nginx.conf ]; then
+    /usr/bin/chef-solo -o amimoto::nginx -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
+  fi
+  if [ ! -f /etc/php-fpm.d/www.conf ]; then
+    /usr/bin/chef-solo -o amimoto::php -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
+  fi
+
+  CF_PATTERN=`/usr/bin/curl -s https://raw.githubusercontent.com/megumiteam/amimoto/master/cf_patern_check.php | /usr/bin/php`
+  if [ "$CF_PATTERN" = "nfs_server" ]; then
+    /usr/bin/chef-solo -o amimoto::nfs_dispatcher -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
+  fi
+  if [ "$CF_PATTERN" = "nfs_client" ]; then
+    /usr/bin/chef-solo -o amimoto::nfs_dispatcher -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
+  fi
+  /bin/rm -rf /tmp/chef-repo/
 fi
-if [ "$CF_PATTERN" = "nfs_client" ]; then
-  /usr/bin/chef-solo -o amimoto::nfs_dispatcher -c /tmp/chef-repo/solo.rb -j /tmp/chef-repo/amimoto.json
-fi
-/bin/rm -rf /tmp/chef-repo/
 
 cd /tmp
 /usr/bin/git clone git://github.com/megumiteam/amimoto.git
@@ -116,8 +119,6 @@ else
   REGION=unknown
 fi
 
-cd /tmp/
-
 if [ "$REGION" = "ap-northeast-1" ]; then
   /bin/cp /tmp/amimoto/etc/motd /etc/motd
   /bin/cat /etc/system-release >> /etc/motd
@@ -127,6 +128,18 @@ else
   /bin/cat /etc/system-release >> /etc/motd
   /bin/cat /tmp/amimoto/etc/motd.en >> /etc/motd
 fi
+
+if [ "t1.micro" = "${INSTANCETYPE}" ]; then
+  sed -e "s/\$host\([;\.]\)/$INSTANCEID\1/" /tmp/amimoto/etc/nginx/conf.d/default.conf > /etc/nginx/conf.d/default.conf
+  sed -e "s/\$host\([;\.]\)/$INSTANCEID\1/" /tmp/amimoto/etc/nginx/conf.d/default.backend.conf > /etc/nginx/conf.d/default.backend.conf
+fi
+if [ ! -d /opt/local/amimoto/wp-admin ]; then
+  /bin/mkdir -p /opt/local/amimoto/wp-admin
+fi
+if [ ! -f /opt/local/amimoto/wp-admin/install.php ]; then
+  /bin/cp /tmp/amimoto/install.php /opt/local/amimoto/wp-admin
+fi
+/bin/chown -R nginx:nginx /opt/local/amimoto
 
 /sbin/service monit stop
 
