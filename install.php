@@ -89,11 +89,17 @@ function esc_attr( $text ) {
 	return $safe_text;
 }
 
-$instance_id = isset($_POST['instance_id']) ? $_POST['instance_id'] : '';
+$instance_id = trim(isset($_POST['instance_id']) ? $_POST['instance_id'] : '');
 $err_msg = '';
 if (isset($_POST['instance_id'])) {
-    $valid_instance_id = file_get_contents('http://169.254.169.254/latest/meta-data/instance-id');
-    if ( $valid_instance_id === $instance_id) {
+    $valid_instance_ids = array(file_get_contents('http://169.254.169.254/latest/meta-data/instance-id'));
+    if ( file_exists('/opt/aws/cloud_formation.json') ) {
+        $data = json_decode(file_get_contents('/opt/aws/cloud_formation.json', true));
+        if ( isset($data['nfs']) )
+        	$valid_instance_ids[] = trime($data['nfs']['server']['instance-id']);
+        unset($data);
+    }
+    if ( in_array($instance_id,$valid_instance_ids) ) {
     	$host_name = esc_attr($_SERVER['SERVER_NAME']);
     	file_put_contents(dirname(dirname(__FILE__)).'/.valid.'.$host_name, 'valid');
     	header('Location: /');
@@ -137,7 +143,7 @@ if ( !empty($err_msg) ) {
 <form id="setup" method="post" action="install.php" novalidate="novalidate">
 	<table class="form-table">
 		<tr>
-			<th scope="row"><label for="instance_id">Your Instance ID</label></th>
+			<th scope="row"><label for="instance_id"><?php echo file_exists('/opt/aws/cloud_formation.json') ? 'Your NFS Server Instance ID' : 'Your Instance ID'; ?></label></th>
 			<td>
 			<input name="instance_id" type="text" id="instance_id" size="25" value="<?php echo esc_attr($instance_id); ?>" />
 		</tr>
