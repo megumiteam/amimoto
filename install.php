@@ -96,9 +96,9 @@ if (isset($_POST['instance_id'])) {
     $valid_instance_ids = array(file_get_contents('http://169.254.169.254/latest/meta-data/instance-id'));
     //$valid_instance_ids = array('<%= @instance_id %>');
     if ( file_exists('/opt/aws/cloud_formation.json') ) {
-        $data = json_decode(file_get_contents('/opt/aws/cloud_formation.json', true));
+        $data = json_decode(file_get_contents('/opt/aws/cloud_formation.json'), true);
         if ( isset($data['nfs']) ) {
-        	$valid_instance_ids[] = trime($data['nfs']['server']['instance-id']);
+        	$valid_instance_ids[] = trim($data['nfs']['server']['instance-id']);
 			$nfs_client = true;
         }
         unset($data);
