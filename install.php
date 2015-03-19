@@ -161,7 +161,7 @@ if ( !empty($err_msg) ) {
 <script type='text/javascript' src='/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1'></script>
 <script type='text/javascript'>
 /* <![CDATA[ */
-var _zxcvbnSettings = {"src":"http:\/\/54.92.45.110\/wp-includes\/js\/zxcvbn.min.js"};
+var _zxcvbnSettings = {"src":"\/wp-includes\/js\/zxcvbn.min.js"};
 /* ]]> */
 </script>
 <script type='text/javascript' src='/wp-includes/js/zxcvbn-async.min.js?ver=1.0'></script>
