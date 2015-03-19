@@ -38,6 +38,9 @@ enabled = 1
 gpgkey = file:///etc/pki/rpm-gpg/RPM-GPG-KEY-percona
 gpgcheck = 1' > /etc/yum.repos.d/Percona.repo
 
+/sbin/service iptables stop
+/sbin/chkconfig iptables off
+
 /sbin/service mysql stop
 
 /bin/cp /dev/null /root/.mysql_history > /dev/null 2>&1
