@@ -15,7 +15,7 @@ function plugin_install(){
   /bin/rm -r /tmp/${1}.zip
 }
 
-WP_VER=4.1
+WP_VER=4.3.1
 
 SERVERNAME=$1
 INSTANCEID=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id`
@@ -202,7 +202,7 @@ plugin_install "debug-bar-console" "$SERVERNAME" > /dev/null 2>&1
 #Security
 plugin_install "crazy-bone" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "login-lockdown" "$SERVERNAME" > /dev/null 2>&1
-plugin_install "google-authenticator" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "rublon" "$SERVERNAME" > /dev/null 2>&1
 
 #Other
 plugin_install "nginx-mobile-theme" "$SERVERNAME" > /dev/null 2>&1
