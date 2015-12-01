@@ -18,7 +18,7 @@ if [ "$SERVERNAME" = "$INSTANCEID" ]; then
   /bin/cp /tmp/amimoto/etc/motd /etc/motd
   /bin/cp /tmp/amimoto/etc/sysconfig/i18n /etc/sysconfig/i18n
 fi
-  
+
 /bin/cp -Rf /tmp/amimoto/etc/nginx/* /etc/nginx/
 sed -e "s/\$host\([;\.]\)/$INSTANCEID\1/" /tmp/amimoto/etc/nginx/conf.d/default.conf > /etc/nginx/conf.d/default.conf
 sed -e "s/\$host\([;\.]\)/$INSTANCEID\1/" /tmp/amimoto/etc/nginx/conf.d/default.backend.conf > /etc/nginx/conf.d/default.backend.conf
@@ -58,6 +58,7 @@ echo "WordPress install ..."
 /bin/mv /tmp/wordpress /var/www/vhosts/$SERVERNAME
 plugin_install "nginx-champuru.1.3.0.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wpbooster-cdn-client.2.5.0.zip" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "c3-cloudfront-clear-cache" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wp-remote-manager-client.0.7.0.2.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "head-cleaner.1.4.2.10.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wp-total-hacks.1.1.2.zip" "$SERVERNAME" > /dev/null 2>&1

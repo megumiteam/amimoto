@@ -200,6 +200,7 @@ if [ "$CF_PATTERN" != "nfs_client" ]; then
   plugin_install "nginx-champuru" "$SERVERNAME" > /dev/null 2>&1
   plugin_install "wpbooster-cdn-client" "$SERVERNAME" > /dev/null 2>&1
   plugin_install "nephila-clavata" "$SERVERNAME" > /dev/null 2>&1
+  plugin_install "c3-cloudfront-clear-cache" "$SERVERNAME" > /dev/null 2>&1
 
   # Developer
   plugin_install "debug-bar" "$SERVERNAME" > /dev/null 2>&1

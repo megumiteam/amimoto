@@ -67,6 +67,7 @@ fi
 $WP_CLI core download --locale=ja --allow-root
 plugin_install "nginx-champuru.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wpbooster-cdn-client.zip" "$SERVERNAME" > /dev/null 2>&1
+plugin_install "c3-cloudfront-clear-cache" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "head-cleaner.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "wp-total-hacks.zip" "$SERVERNAME" > /dev/null 2>&1
 plugin_install "flamingo.zip" "$SERVERNAME" > /dev/null 2>&1
