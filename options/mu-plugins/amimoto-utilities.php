@@ -45,8 +45,8 @@ function amimoto_edit_option_keys_for_s3( $option_keys ) {
 
 
 // Force Activation
-add_action('init', function(){new just_do_it();});
-class just_do_it {
+add_action('init', function(){new jinkei_just_do_it();});
+class jinkei_just_do_it {
   private $must_plugins = array();
 
   function __construct() {
