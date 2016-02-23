@@ -45,33 +45,9 @@ function amimoto_edit_option_keys_for_s3( $option_keys ) {
 
 
 // Force Activation
-add_action('init', function(){new jinkei_just_do_it();});
-class jinkei_just_do_it {
-  private $must_plugins = array();
-
-  function __construct() {
-    if (!is_user_logged_in())
-      return;
-
-      $this->must_plugins['Nephila clavata'] = 'nephila-clavata/plugin.php';
-      $this->must_plugins['C3 Cloudfront Clear Cache'] = 'c3-cloudfront-clear-cache/c3-cloudfront-clear-cache.php';
-    add_action('shutdown', array($this, 'plugins_loaded'));
-  }
-
-  public function plugins_loaded() {
-    $activated = false;
-    $activePlugins = get_settings('active_plugins');
-    foreach ($this->must_plugins as $key => $plugin) {
-      if ( !array_search($plugin, $activePlugins) && file_exists(WP_PLUGIN_DIR.'/'.$plugin) ) {
-        activate_plugin( $plugin, '', $this->is_multisite() );
-        $activated = true;
-      }
-    }
-    if ($activated)
-      @unlink(__FILE__);
-  }
-
-  private function is_multisite() {
-    return function_exists('is_multisite') && is_multisite();
-  }
+add_filter( 'amimoto_just_do_it', 'amimoto_cfn_simple_stack' ) ;
+function amimoto_cfn_simple_stack( $must_plugins ) {
+	$must_plugins['Nephila clavata'] = 'nephila-clavata/plugin.php';
+	$must_plugins['C3 Cloudfront Clear Cache'] = 'c3-cloudfront-clear-cache/c3-cloudfront-clear-cache.php';
+	return $must_plugins;
 }
