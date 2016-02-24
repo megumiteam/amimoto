@@ -21,6 +21,8 @@ class just_do_it {
       $this->must_plugins['WP Multibyte Patch'] = 'wp-multibyte-patch/wp-multibyte-patch.php';
     if (defined('IS_AMIMOTO') && IS_AMIMOTO)
       $this->must_plugins['Nginx Cache Controller'] = 'nginx-champuru/nginx-champuru.php';
+
+	$this->must_plugins = apply_filters( 'amimoto_just_do_it', $this->must_plugins );
     add_action('shutdown', array($this, 'plugins_loaded'));
   }
 

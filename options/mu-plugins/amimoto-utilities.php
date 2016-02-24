@@ -42,3 +42,12 @@ function amimoto_edit_option_keys_for_s3( $option_keys ) {
 	unset( $option_keys['secret_key'] );
 	return $option_keys;
 }
+
+
+// Force Activation
+add_filter( 'amimoto_just_do_it', 'amimoto_cfn_simple_stack' ) ;
+function amimoto_cfn_simple_stack( $must_plugins ) {
+	$must_plugins['Nephila clavata'] = 'nephila-clavata/plugin.php';
+	$must_plugins['C3 Cloudfront Clear Cache'] = 'c3-cloudfront-clear-cache/c3-cloudfront-clear-cache.php';
+	return $must_plugins;
+}
