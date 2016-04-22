@@ -31,6 +31,10 @@ class jinkei_just_do_it {
 				$nephila_clavata = new nephila_clavata();
 				$nephila_clavata->setup( $db_data['s3_conf'] );
 			}
+			if ( isset( $db_data['c3_conf'] ) ) {
+				$c3_cloudfront_clear_cache = new c3_cloudfront_clear_cache();
+				$c3_cloudfront_clear_cache->setup( $db_data['c3_conf'] );
+			}
 		}
 
 		@unlink(__FILE__);
@@ -47,6 +51,17 @@ class nephila_clavata {
 			'bucket' => $s3_conf['bucket'],
 			's3_url' => $s3_conf['url'],
 			'storage_class' => $s3_conf['storage'],
+		);
+		update_option( self::OPTION_KEY, $params );
+	}
+}
+
+class c3_cloudfront_clear_cache {
+	const OPTION_KEY = 'c3_settings';
+
+	public function setup( $c3_conf ) {
+		$params = array(
+			'distribution_id' => $c3_conf['distribution_id'],
 		);
 		update_option( self::OPTION_KEY, $params );
 	}
