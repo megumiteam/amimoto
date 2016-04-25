@@ -47,7 +47,7 @@ class nephila_clavata {
 
 	public function setup( $s3_conf ) {
 		$params = array(
-			'region' => $s3_conf['region'],
+			'region' => srt_replace( '-', '_', strtoupper( $s3_conf['region'] ) ),
 			'bucket' => $s3_conf['bucket'],
 			's3_url' => $s3_conf['url'],
 			'storage_class' => $s3_conf['storage'],
