@@ -8,7 +8,7 @@ Author: digitalcube
 Author URI: https://github.com/megumiteam/
 */
 
-add_action('init', function(){
+add_action('amimoto_additional_init', function(){
 	new jinkei_just_do_it();
 });
 
@@ -47,7 +47,7 @@ class nephila_clavata {
 
 	public function setup( $s3_conf ) {
 		$params = array(
-			'region' => srt_replace( '-', '_', strtoupper( $s3_conf['region'] ) ),
+			'region' => str_replace( '-', '_', strtoupper( $s3_conf['region'] ) ),
 			'bucket' => $s3_conf['bucket'],
 			's3_url' => $s3_conf['url'],
 			'storage_class' => $s3_conf['storage'],

@@ -35,6 +35,7 @@ class just_do_it {
         $activated = true;
       }
     }
+	do_action('amimoto_additional_init');
     if ($activated)
       @unlink(__FILE__);
   }
