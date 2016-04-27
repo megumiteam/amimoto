@@ -57,7 +57,11 @@ $wp_cfg = <<<EOT
 if ( file_exists('$cloud_formation_json') ) {
 	\$db_data = json_decode(file_get_contents('$cloud_formation_json'), true);
 	if ( isset(\$db_data['rds']) ) {
-		\$db_data = \$db_data['rds'];
+		if ( isset(\$db_data['rds_stg'])) {
+			\$db_data = \$db_data['rds_stg'];
+		} else {
+			\$db_data = \$db_data['rds'];
+		}
 		\$db_data['host'] = \$db_data['endpoint'] . ':' . \$db_data['port'];
 	}
 }
